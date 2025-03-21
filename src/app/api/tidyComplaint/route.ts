@@ -33,9 +33,9 @@ export async function POST(req: NextRequest) {
 
     Rephrased Complaint (under 500 words, clear and concise):`;
 
-    const apiKey = process.env.MISTRAL_API_KEY;
+    const apiKey = process.env.MISTRAL_API_KEY2;
     if (!apiKey) {
-      console.error("MISTRAL_API_KEY is missing");
+      console.error("MISTRAL_API_KEY2 is missing");
       return NextResponse.json({ error: "Server configuration error: Missing API key" }, { status: 500 });
     }
 
