@@ -38,11 +38,11 @@ export async function GET(request: Request) {
 
   try {
     // First try an exact match
-    let entry = socialHandleMap[companyKey];
+    let entry: CompanyEntry | null = socialHandleMap[companyKey];
 
     // If no exact match, use fuzzy search to find similar names
     if (!entry) {
-      const fuzzyResults = searcher.search(company);
+      const fuzzyResults: CompanyEntry[] = searcher.search(company);
       entry = fuzzyResults.length > 0 ? fuzzyResults[0] : null;
     }
 
@@ -57,20 +57,22 @@ export async function GET(request: Request) {
       });
     } else {
       return NextResponse.json({
-        xHandle: `${companySlug} (guess)`, // Add "(guess)" to clarify it's speculative
-        fbHandle: `${companySlug} (guess)`, // Same for Facebook
+        xHandle: `${companySlug} (guess)`,
+        fbHandle: `${companySlug} (guess)`,
         email: defaultEmail,
         companyNumber: "Unknown",
+        companyName: company, // Include original input for clarity
         message: "Company not in database. Social handles are guesses—verify manually.",
       });
     }
-  } catch (err) {
+  } catch (err: unknown) {
     console.error("Error in getSocialHandles:", err);
     return NextResponse.json({
-      xHandle: `${companySlug} (guess)`, // Consistent fallback
+      xHandle: `${companySlug} (guess)`,
       fbHandle: `${companySlug} (guess)`,
       email: defaultEmail,
       companyNumber: "Unknown",
+      companyName: company,
       message: "Error retrieving details. Social handles are guesses—verify manually.",
     });
   }

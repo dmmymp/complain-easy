@@ -171,8 +171,8 @@ export default function Home() {
   const [showLegalReminder, setShowLegalReminder] = useState<boolean>(false);
   const [showShareConfirmation, setShowShareConfirmation] = useState<"X" | "Facebook" | null>(null);
   const [suggestionIndex, setSuggestionIndex] = useState<number>(0);
-  const [expandedBody, setExpandedBody] = useState<string | null>(null); // For mobile toggle
-  const tidiedComplaintRef = useRef<HTMLPreElement | HTMLTextAreaElement>(null);
+  const [expandedBody, setExpandedBody] = useState<string | null>(null);
+  const tidiedComplaintRef = useRef<HTMLPreElement>(null);
 
   const complaintTypes = [
     "Service Delays",
@@ -236,7 +236,7 @@ export default function Home() {
       if (!response.ok) throw new Error("Network response was not ok");
       const data = await response.json();
       setSocialHandles(data);
-    } catch (err) {
+    } catch (err: unknown) {
       setError("An error occurred while fetching company details. Please try again.");
       console.error(err);
     } finally {
@@ -298,7 +298,7 @@ export default function Home() {
       const data = await response.json();
       setTidiedComplaint(data.tidiedComplaint || "No tidied complaint returned");
       setEditedTidiedComplaint(data.tidiedComplaint || "");
-    } catch (err) {
+    } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : String(err);
       setError(`An error occurred while tidying the complaint: ${errorMessage}. Please try again.`);
       console.error("Tidy Error:", err);
@@ -323,6 +323,11 @@ export default function Home() {
 
   const confirmShare = async (platform: "X" | "Facebook") => {
     setShowShareConfirmation(null);
+
+    if (!tidiedComplaintRef.current) {
+      setError("Unable to share: Complaint element not found.");
+      return;
+    }
 
     const complaintToSanitize = isEditingTidiedComplaint ? editedTidiedComplaint : tidiedComplaint;
     const sanitizedComplaintLines = complaintToSanitize.split("\n").filter(line => line.trim() !== "");
@@ -368,6 +373,7 @@ ${formData.includeName ? formData.fullName : "[Name omitted]"}
         onclone: (document) => {
           const elements = document.querySelectorAll("*");
           elements.forEach((el) => {
+            if (!(el instanceof HTMLElement)) return; // Skip non-HTML elements
             const style = window.getComputedStyle(el);
             const color = style.color;
             const backgroundColor = style.backgroundColor;
@@ -413,24 +419,26 @@ ${formData.includeName ? formData.fullName : "[Name omitted]"}
           .filter(Boolean);
         const ccText = ccHandles.length > 0 ? ` (CC: ${ccHandles.join(", ")})` : "";
         const url = window.location.href;
-        const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}"e=${encodeURIComponent(
+        const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(
           `Complained to ${socialHandles?.fbHandle || "this company"} with this free tool!${ccText}`
         )}`;
         window.open(facebookUrl, "_blank", "width=600,height=400");
       }
-    } catch (err) {
+    } catch (err: unknown) {
       console.error(`Failed to generate screenshot for ${platform}:`, err);
       setError("Failed to generate screenshot. Please try again or contact support.");
     } finally {
-      tidiedComplaintRef.current.innerText = originalContent;
-      tidiedComplaintRef.current.style.display = "";
-      tidiedComplaintRef.current.style.visibility = "";
-      tidiedComplaintRef.current.style.color = "";
-      tidiedComplaintRef.current.style.backgroundColor = "";
-      tidiedComplaintRef.current.style.fontFamily = "";
-      tidiedComplaintRef.current.style.width = "";
-      tidiedComplaintRef.current.style.minHeight = "";
-      tidiedComplaintRef.current.style.padding = "";
+      if (tidiedComplaintRef.current) {
+        tidiedComplaintRef.current.innerText = originalContent;
+        tidiedComplaintRef.current.style.display = "";
+        tidiedComplaintRef.current.style.visibility = "";
+        tidiedComplaintRef.current.style.color = "";
+        tidiedComplaintRef.current.style.backgroundColor = "";
+        tidiedComplaintRef.current.style.fontFamily = "";
+        tidiedComplaintRef.current.style.width = "";
+        tidiedComplaintRef.current.style.minHeight = "";
+        tidiedComplaintRef.current.style.padding = "";
+      }
     }
   };
 
@@ -513,10 +521,10 @@ ${formData.includeName ? formData.fullName : "[Name omitted]"}
                 <p className="text-sm text-gray-700 mb-4 dark:text-gray-300">
                   <strong>About This Tool:</strong> A free way to post complaints to company social media. We don’t store your data after use—just write and share.
                 </p>
-                <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">{socialHandles.companyName}</h2>
-                <p><strong className="text-black dark:text-white">X Handle:</strong> {socialHandles.xHandle}</p>
-                <p><strong className="text-black dark:text-white">Facebook Handle:</strong> {socialHandles.fbHandle}</p>
-                <p className="text-gray-600 mt-2 dark:text-gray-400">{socialHandles.message}</p>
+                <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">{socialHandles!.companyName}</h2>
+                <p><strong className="text-black dark:text-white">X Handle:</strong> {socialHandles!.xHandle}</p>
+                <p><strong className="text-black dark:text-white">Facebook Handle:</strong> {socialHandles!.fbHandle}</p>
+                <p className="text-gray-600 mt-2 dark:text-gray-400">{socialHandles!.message}</p>
 
                 <h3 className="text-lg font-semibold mt-6 mb-2 text-black dark:text-white">Your Details</h3>
                 <InputField
@@ -634,7 +642,7 @@ ${formData.includeName ? formData.fullName : "[Name omitted]"}
                   onChange={(value) => {
                     if (value.length <= 1000) {
                       updateFormData("complaint", value);
-                      setError(""); // Clear error if within limit
+                      setError("");
                     } else {
                       setError("Complaint cannot exceed 1000 characters.");
                     }
@@ -655,7 +663,7 @@ ${formData.includeName ? formData.fullName : "[Name omitted]"}
                   style={{ borderColor: formData.complaint ? "green" : "gray" }}
                 >
                   {formData.complaint
-                    ? `To: ${socialHandles.companyName},\n\n${formData.complaint}\n\nFrom: ${formData.fullName}`
+                    ? `To: ${socialHandles!.companyName},\n\n${formData.complaint}\n\nFrom: ${formData.fullName}`
                     : "Start typing your complaint above..."}
                 </pre>
 
@@ -711,7 +719,7 @@ ${formData.includeName ? formData.fullName : "[Name omitted]"}
                           Cancel
                         </button>
                         <button
-                          onClick={() => confirmShare(showShareConfirmation)}
+                          onClick={() => confirmShare(showShareConfirmation!)}
                           className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700"
                         >
                           Confirm
@@ -734,7 +742,7 @@ ${formData.includeName ? formData.fullName : "[Name omitted]"}
                       />
                     ) : (
                       <pre
-                        ref={tidiedComplaintRef as React.RefObject<HTMLPreElement>}
+                        ref={tidiedComplaintRef}
                         className="whitespace-pre-wrap mb-4 min-h-[400px] border p-2 rounded bg-gray-50 dark:bg-gray-800 dark:text-white dark:border-gray-700"
                       >
                         {editedTidiedComplaint || tidiedComplaint}

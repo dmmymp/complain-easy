@@ -44,3 +44,4 @@ next-env.d.ts
 node_modules/
 .env.localpackage-lock.json
 package-lock.json
+package-lock.json
