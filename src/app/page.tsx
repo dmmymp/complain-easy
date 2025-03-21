@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import html2canvas from "html2canvas";
 import Link from "next/link";
 import Head from "next/head";

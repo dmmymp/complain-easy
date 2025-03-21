@@ -1,89 +1,101 @@
-"use client";
-
-import Link from "next/link";
-
 export default function PrivacyPolicy() {
-  return (
-    <div className="container mx-auto p-6 bg-white dark:bg-gray-900 min-h-screen">
-      <h1 className="text-2xl font-bold mb-6 text-black dark:text-white">Privacy Policy</h1>
-      <div className="prose dark:prose-invert max-w-none text-black dark:text-white">
-        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-          Last Updated: March 20, 2025
+    return (
+      <div className="container mx-auto p-6 bg-white dark:bg-gray-900">
+        <h1 className="text-3xl font-bold mb-6 text-black dark:text-white">
+          Privacy Policy
+        </h1>
+        <p className="text-gray-600 mb-4 dark:text-gray-300">
+          Last updated: March 21, 2025
         </p>
-
-        <h2 className="text-xl font-semibold mt-6 mb-2">1. Introduction</h2>
-        <p>
-          Complain Easy ("the Service") is operated by Velaryn Ltd. We are committed to protecting your privacy. This Privacy Policy explains how we handle your data when you use the Service. If you have any questions, please contact us at <a href="mailto:info@velaryn.com" className="text-blue-600 hover:underline dark:text-blue-400">info@velaryn.com</a>.
+        <p className="text-gray-600 mb-4 dark:text-gray-300">
+          At Complain Easy, we are committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you use our website and services. By using Complain Easy, you agree to the terms outlined in this policy.
         </p>
-
-        <h2 className="text-xl font-semibold mt-6 mb-2">2. Data We Collect</h2>
-        <p>
-          When you use Complain Easy, you may provide the following data:
+  
+        <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">
+          1. Information We Collect
+        </h2>
+        <p className="text-gray-600 mb-4 dark:text-gray-300">
+          We collect the following information when you use our platform:
         </p>
-        <ul className="list-disc pl-6">
-          <li>Your full name (optional, depending on your preference to include it in the complaint).</li>
-          <li>The company name you are complaining about.</li>
-          <li>The text of your complaint.</li>
-          <li>Your consent to use the Service.</li>
+        <ul className="list-disc pl-5 mb-4 text-gray-600 dark:text-gray-300">
+          <li>
+            <strong>Personal Information:</strong> Your full name, which you provide when submitting a complaint.
+          </li>
+          <li>
+            <strong>Complaint Details:</strong> Information you provide in your complaint, such as the company name, complaint type, and the complaint text itself.
+          </li>
+          <li>
+            <strong>Usage Data:</strong> We may collect anonymous usage data, such as page views and interactions, to improve our services.
+          </li>
         </ul>
-        <p>
-          We do not collect any additional personal data, such as your email address, IP address, or browsing history.
+  
+        <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">
+          2. How We Use Your Information
+        </h2>
+        <p className="text-gray-600 mb-4 dark:text-gray-300">
+          We use your information for the following purposes:
         </p>
-
-        <h2 className="text-xl font-semibold mt-6 mb-2">3. How We Use Your Data</h2>
-        <p>
-          The data you provide is used solely for the following purposes:
-        </p>
-        <ul className="list-disc pl-6">
-          <li>To generate and tidy your complaint using Mistral AI.</li>
-          <li>To create a screenshot of your complaint for sharing on social media platforms (X or Facebook).</li>
-          <li>To facilitate sharing your complaint on the selected social media platform.</li>
+        <ul className="list-disc pl-5 mb-4 text-gray-600 dark:text-gray-300">
+          <li>
+            To generate and tidy your complaint using AI (via Mistral AI).
+          </li>
+          <li>
+            To facilitate sharing your complaint on social media platforms (X or Facebook).
+          </li>
+          <li>
+            To improve our platform through anonymous usage analytics.
+          </li>
         </ul>
-        <p>
-          Your data is used temporarily during the complaint generation and sharing process and is not stored after the process is complete.
+  
+        <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">
+          3. Data Storage and Retention
+        </h2>
+        <p className="text-gray-600 mb-4 dark:text-gray-300">
+          We do not store your personal data after you use our service. Once your complaint is generated and shared, all data you provide (including your name and complaint details) is deleted from our systems. We only retain anonymous usage data for analytics purposes.
         </p>
-
-        <h2 className="text-xl font-semibold mt-6 mb-2">4. Data Storage and Deletion</h2>
-        <p>
-          Complain Easy does not store your personal data after you complete the complaint process. Once your complaint is generated and shared (or if you exit the Service), all data you provided is deleted from our systems immediately. We do not retain any copies of your complaint, name, or other information.
+  
+        <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">
+          4. Third-Party Services
+        </h2>
+        <p className="text-gray-600 mb-4 dark:text-gray-300">
+          We use the following third-party services:
         </p>
-
-        <h2 className="text-xl font-semibold mt-6 mb-2">5. Third-Party Services</h2>
-        <p>
-          We use Mistral AI to tidy your complaint text. When you use the Service, your complaint text is sent to Mistral AI for processing. Mistral AI’s privacy practices apply to the data sent to their service. We do not control Mistral AI’s data handling practices and are not responsible for their actions.
+        <ul className="list-disc pl-5 mb-4 text-gray-600 dark:text-gray-300">
+          <li>
+            <strong>Mistral AI:</strong> To tidy your complaint for clarity. Mistral AI may process your complaint text temporarily, but we do not store this data. Learn more about Mistral AI&apos;s privacy practices at <a href="https://mistral.ai" className="text-blue-600 hover:underline dark:text-blue-400">mistral.ai</a>.
+          </li>
+          <li>
+            <strong>Social Media Platforms:</strong> When you share your complaint on X or Facebook, those platforms may collect data according to their privacy policies.
+          </li>
+        </ul>
+  
+        <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">
+          5. Your Rights
+        </h2>
+        <p className="text-gray-600 mb-4 dark:text-gray-300">
+          As a UK user, you have rights under the General Data Protection Regulation (GDPR), including the right to access, correct, or delete your personal data. Since we do not store your data after use, there is no personal data to access or delete. If you have concerns, please contact us at <a href="mailto:info@velaryn.com" className="text-blue-600 hover:underline dark:text-blue-400">info@velaryn.com</a>.
         </p>
-        <p>
-          When you share your complaint on X or Facebook, their respective privacy policies apply. We do not control how these platforms handle your data.
+  
+        <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">
+          6. Security
+        </h2>
+        <p className="text-gray-600 mb-4 dark:text-gray-300">
+          We take reasonable measures to protect your data during use, including secure transmission and temporary processing. However, no method of transmission over the internet is 100% secure, and we cannot guarantee absolute security.
         </p>
-
-        <h2 className="text-xl font-semibold mt-6 mb-2">6. Data Security</h2>
-        <p>
-          We take reasonable measures to protect your data during the brief period it is processed by our Service. However, no method of transmission over the internet is 100% secure, and we cannot guarantee absolute security.
+  
+        <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">
+          7. Changes to This Policy
+        </h2>
+        <p className="text-gray-600 mb-4 dark:text-gray-300">
+          We may update this Privacy Policy from time to time. Any changes will be posted on this page with an updated &quot;Last updated&quot; date. We encourage you to review this policy periodically.
         </p>
-
-        <h2 className="text-xl font-semibold mt-6 mb-2">7. Your Rights</h2>
-        <p>
-          Since we do not store your data, there is no personal data to access, correct, or delete after the complaint process is complete. If you have concerns about your data, please contact us at <a href="mailto:info@velaryn.com" className="text-blue-600 hover:underline dark:text-blue-400">info@velaryn.com</a>.
-        </p>
-
-        <h2 className="text-xl font-semibold mt-6 mb-2">8. Changes to This Privacy Policy</h2>
-        <p>
-          We may update this Privacy Policy from time to time. Any changes will be posted on this page with an updated "Last Updated" date. Your continued use of the Service after such changes constitutes acceptance of the new policy.
-        </p>
-
-        <h2 className="text-xl font-semibold mt-6 mb-2">9. Contact Us</h2>
-        <p>
+  
+        <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">
+          8. Contact Us
+        </h2>
+        <p className="text-gray-600 mb-4 dark:text-gray-300">
           If you have any questions about this Privacy Policy, please contact us at <a href="mailto:info@velaryn.com" className="text-blue-600 hover:underline dark:text-blue-400">info@velaryn.com</a>.
         </p>
       </div>
-      <footer className="mt-8 text-center text-gray-600 dark:text-gray-300">
-        <p>
-          <Link href="/" className="text-blue-600 hover:underline dark:text-blue-400">Back to Home</Link> |{" "}
-          <Link href="/terms-of-use" className="text-blue-600 hover:underline dark:text-blue-400">Terms of Use</Link> |{" "}
-          <Link href="/consumer-rights" className="text-blue-600 hover:underline dark:text-blue-400">Consumer Rights</Link> |{" "}
-          <a href="mailto:info@velaryn.com" className="text-blue-600 hover:underline dark:text-blue-400">Feedback & Suggestions</a>
-        </p>
-      </footer>
-    </div>
-  );
-}
+    );
+  }
