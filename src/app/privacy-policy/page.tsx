@@ -1,7 +1,5 @@
 "use client";
 
-import Link from "next/link"; // Note: This import isn't used in the current code, but I'll keep it in case you add links later
-
 export default function PrivacyPolicy() {
   // Function to handle "Go Back" navigation
   const handleGoBack = () => {
@@ -81,7 +79,7 @@ export default function PrivacyPolicy() {
       </p>
       <ul className="list-disc pl-5 mb-4 text-gray-600 dark:text-gray-300">
         <li>
-          <strong>Mistral AI:</strong> To tidy your complaint for clarity. Mistral AI may process your complaint text temporarily, but we do not store this data. Learn more about Mistral AI's privacy practices at <a href="https://mistral.ai" className="text-blue-600 hover:underline dark:text-blue-400">mistral.ai</a>.
+          <strong>Mistral AI:</strong> To tidy your complaint for clarity. Mistral AI may process your complaint text temporarily, but we do not store this data. Learn more about Mistral AI&apos;s privacy practices at <a href="https://mistral.ai" className="text-blue-600 hover:underline dark:text-blue-400">mistral.ai</a>.
         </li>
         <li>
           <strong>Social Media Platforms:</strong> When you share your complaint on X or Facebook, those platforms may collect data according to their privacy policies.
@@ -92,7 +90,7 @@ export default function PrivacyPolicy() {
         5. Your Rights
       </h2>
       <p className="text-gray-600 mb-4 dark:text-gray-300">
-        As a UK user, you have rights under the General Data Protection Regulation (GDPR), including the right to access, correct, or delete your personal data. Since we do not store your data after use, there is no personal data to access or delete. If you have concerns, please contact us at <a href="mailto:info@velaryn.com" className="text-blue-600 hover:underline dark:text-blue-400">info@velaryn.com</a>.
+        As a UK user, you have rights under the General Data Protection Regulation <strong>(&quot;GDPR&quot;)</strong>, including the right to access, correct, or delete your personal data. Since we do not store your data after use, there is no personal data to access or delete. If you have concerns, please contact us at <a href="mailto:info@velaryn.com" className="text-blue-600 hover:underline dark:text-blue-400">info@velaryn.com</a>.
       </p>
 
       <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">
@@ -106,7 +104,7 @@ export default function PrivacyPolicy() {
         7. Changes to This Policy
       </h2>
       <p className="text-gray-600 mb-4 dark:text-gray-300">
-        We may update this Privacy Policy from time to time. Any changes will be posted on this page with an updated "Last updated" date. We encourage you to review this policy periodically.
+        We may update this Privacy Policy from time to time. Any changes will be posted on this page with an updated &quot;Last updated&quot; date. We encourage you to review this policy periodically.
       </p>
 
       <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">

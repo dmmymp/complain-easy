@@ -1,7 +1,5 @@
 "use client";
 
-import Link from "next/link"; // Note: This import isn't used in the current code, but I'll keep it in case you add links later
-
 export default function TermsOfUse() {
   // Function to handle "Go Back" navigation
   const handleGoBack = () => {
@@ -71,7 +69,7 @@ export default function TermsOfUse() {
         4. Limitation of Liability
       </h2>
       <p className="text-gray-600 mb-4 dark:text-gray-300">
-        Complain Easy is provided "as is" without warranties. We are not liable for any damages arising from your use of our services, including issues with third-party platforms or the accuracy of your complaint.
+        Complain Easy is provided <strong>&quot;as is&quot;</strong> without warranties. We are not liable for any damages arising from your use of our services, including issues with third-party platforms or the accuracy of your complaint.
       </p>
 
       <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">
@@ -85,7 +83,7 @@ export default function TermsOfUse() {
         6. Changes to These Terms
       </h2>
       <p className="text-gray-600 mb-4 dark:text-gray-300">
-        We may update these Terms of Use from time to time. Changes will be posted on this page with an updated "Last updated" date.
+        We may update these <strong>&quot;Terms of Use&quot;</strong> from time to time. Changes will be posted on this page with an updated &quot;Last updated&quot; date.
       </p>
 
       <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">
