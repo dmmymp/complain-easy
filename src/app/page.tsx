@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import html2canvas from "html2canvas";
 import Link from "next/link";
 import Head from "next/head";
@@ -13,6 +13,8 @@ const InputField = ({
   type = "text",
   required = false,
   onKeyDown,
+  maxLength,
+  inputRef,
 }: {
   label: string;
   value: string;
@@ -21,6 +23,8 @@ const InputField = ({
   type?: string;
   required?: boolean;
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  maxLength?: number;
+  inputRef?: React.RefObject<HTMLInputElement>;
 }) => (
   <div className="mb-4">
     <label className="block text-black dark:text-white mb-1">{label}</label>
@@ -32,7 +36,14 @@ const InputField = ({
       className="w-full p-2 border rounded text-black placeholder-gray-500 dark:text-white dark:border-gray-700 dark:bg-gray-800 dark:placeholder-gray-400"
       required={required}
       onKeyDown={onKeyDown}
+      maxLength={maxLength}
+      ref={inputRef}
     />
+    {maxLength && (
+      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+        {value.length}/{maxLength} characters
+      </p>
+    )}
   </div>
 );
 
@@ -43,6 +54,8 @@ const TextAreaField = ({
   placeholder,
   required = false,
   className = "",
+  maxLength,
+  textAreaRef,
 }: {
   label: string;
   value: string;
@@ -50,6 +63,8 @@ const TextAreaField = ({
   placeholder: string;
   required?: boolean;
   className?: string;
+  maxLength?: number;
+  textAreaRef?: React.RefObject<HTMLTextAreaElement>;
 }) => (
   <div className="mb-4">
     <label className="block text-black dark:text-white mb-1">{label}</label>
@@ -59,7 +74,14 @@ const TextAreaField = ({
       placeholder={placeholder}
       className={`w-full p-2 border rounded text-black placeholder-gray-500 min-h-[100px] dark:text-white dark:border-gray-700 dark:bg-gray-800 dark:placeholder-gray-400 ${className}`}
       required={required}
+      maxLength={maxLength}
+      ref={textAreaRef}
     />
+    {maxLength && (
+      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+        {value.length}/{maxLength} characters
+      </p>
+    )}
   </div>
 );
 
@@ -173,6 +195,10 @@ export default function Home() {
   const [suggestionIndex, setSuggestionIndex] = useState<number>(0);
   const [expandedBody, setExpandedBody] = useState<string | null>(null);
   const tidiedComplaintRef = useRef<HTMLPreElement>(null);
+  const fullNameRef = useRef<HTMLInputElement>(null);
+  const complaintRef = useRef<HTMLTextAreaElement>(null);
+  const consentRef = useRef<HTMLInputElement>(null);
+  const editComplaintRef = useRef<HTMLTextAreaElement>(null);
 
   const complaintTypes = [
     "Service Delays",
@@ -235,6 +261,9 @@ export default function Home() {
       const response = await fetch(`/api/getSocialHandles?company=${encodeURIComponent(formData.company)}`);
       if (!response.ok) throw new Error("Network response was not ok");
       const data = await response.json();
+      if (data.companyName.toLowerCase() !== formData.company.toLowerCase()) {
+        setError(`Company "${formData.company}" not found. Showing results for "${data.companyName}".`);
+      }
       setSocialHandles(data);
     } catch (err: unknown) {
       setError("An error occurred while fetching company details. Please try again.");
@@ -252,8 +281,8 @@ export default function Home() {
   };
 
   const handleGetSuggestion = () => {
-    if (!formData.complaintType || formData.complaintType === "Other") {
-      setError("Please select a complaint type first (other than 'Other').");
+    if (!formData.complaintType) {
+      setError("Please select a complaint type first.");
       return;
     }
 
@@ -269,11 +298,29 @@ export default function Home() {
   };
 
   const handleTidyComplaint = async () => {
-    if (!formData.complaint || !formData.fullName || !formData.consent) {
-      setError("Please fill in your name, complaint, and agree to the disclaimer first.");
+    let errorMessage = "";
+    let scrollToRef: React.RefObject<HTMLElement> | null = null;
+
+    if (!formData.fullName) {
+      errorMessage = "Please enter your full name.";
+      scrollToRef = fullNameRef;
+    } else if (!formData.complaint) {
+      errorMessage = "Please enter your complaint.";
+      scrollToRef = complaintRef;
+    } else if (!formData.consent) {
+      errorMessage = "Please consent to data usage by checking the box.";
+      scrollToRef = consentRef;
+    }
+
+    if (errorMessage) {
+      setError(errorMessage);
+      if (scrollToRef?.current) {
+        scrollToRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
       return;
     }
 
+    setError("");
     setShowLegalReminder(true);
   };
 
@@ -342,18 +389,15 @@ export default function Home() {
 
     const bodyLines = sanitizedComplaintLines.slice(1, bodyEndIndex);
     const sanitizedComplaint = `
-
 ${bodyLines.join("\n").trim()}
-
-Yours sincerely,
-${formData.includeName ? formData.fullName : "[Name omitted]"}
+${formData.includeName ? `\n\nYours sincerely,\n${formData.fullName}` : ""}
     `.trim();
 
     const originalContent = tidiedComplaintRef.current.innerText;
     tidiedComplaintRef.current.innerText = sanitizedComplaint;
 
     try {
-      console.log("Capturing element with content:", tidiedComplaintRef.current.innerText);
+      console.log("Before screenshot - Content:", tidiedComplaintRef.current.innerText);
       tidiedComplaintRef.current.style.display = "block";
       tidiedComplaintRef.current.style.visibility = "visible";
       tidiedComplaintRef.current.style.color = "#000000";
@@ -362,8 +406,13 @@ ${formData.includeName ? formData.fullName : "[Name omitted]"}
       tidiedComplaintRef.current.style.width = "600px";
       tidiedComplaintRef.current.style.minHeight = "400px";
       tidiedComplaintRef.current.style.padding = "10px";
+      tidiedComplaintRef.current.style.position = "absolute";
+      tidiedComplaintRef.current.style.left = "0";
+      tidiedComplaintRef.current.style.top = "0";
 
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
+      console.log("After delay - Content:", tidiedComplaintRef.current.innerText);
 
       const canvas = await html2canvas(tidiedComplaintRef.current, {
         scale: 2,
@@ -373,7 +422,7 @@ ${formData.includeName ? formData.fullName : "[Name omitted]"}
         onclone: (document) => {
           const elements = document.querySelectorAll("*");
           elements.forEach((el) => {
-            if (!(el instanceof HTMLElement)) return; // Skip non-HTML elements
+            if (!(el instanceof HTMLElement)) return;
             const style = window.getComputedStyle(el);
             const color = style.color;
             const backgroundColor = style.backgroundColor;
@@ -409,7 +458,7 @@ ${formData.includeName ? formData.fullName : "[Name omitted]"}
         const tweetText = `Hey ${socialHandles?.xHandle || "@company"}, here’s my complaint - please fix it!${ccText} Made with this free tool ➡️`;
         const url = window.location.href;
         const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}&url=${encodeURIComponent(url)}`;
-        window.open(twitterUrl, "_blank", "width=600,height=400");
+        window.location.href = twitterUrl;
       } else {
         const ccHandles = formData.regulatoryBodies
           .map((bodyName) => {
@@ -419,10 +468,10 @@ ${formData.includeName ? formData.fullName : "[Name omitted]"}
           .filter(Boolean);
         const ccText = ccHandles.length > 0 ? ` (CC: ${ccHandles.join(", ")})` : "";
         const url = window.location.href;
-        const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(
+        const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}"e=${encodeURIComponent(
           `Complained to ${socialHandles?.fbHandle || "this company"} with this free tool!${ccText}`
         )}`;
-        window.open(facebookUrl, "_blank", "width=600,height=400");
+        window.location.href = facebookUrl;
       }
     } catch (err: unknown) {
       console.error(`Failed to generate screenshot for ${platform}:`, err);
@@ -438,6 +487,9 @@ ${formData.includeName ? formData.fullName : "[Name omitted]"}
         tidiedComplaintRef.current.style.width = "";
         tidiedComplaintRef.current.style.minHeight = "";
         tidiedComplaintRef.current.style.padding = "";
+        tidiedComplaintRef.current.style.position = "";
+        tidiedComplaintRef.current.style.left = "";
+        tidiedComplaintRef.current.style.top = "";
       }
     }
   };
@@ -451,10 +503,36 @@ ${formData.includeName ? formData.fullName : "[Name omitted]"}
     }
   };
 
+  useEffect(() => {
+    if (isEditingTidiedComplaint && editComplaintRef.current) {
+      editComplaintRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }, [isEditingTidiedComplaint]);
+
   const getCurrentStep = () => {
     if (tidiedComplaint) return 3;
     if (socialHandles) return 2;
     return 1;
+  };
+
+  // New function to handle resetting state when going back to company search
+  const handleBackToSearch = () => {
+    setSocialHandles(null); // Reset social handles to show the search form
+    setFormData({
+      company: "",
+      fullName: "",
+      complaint: "",
+      complaintType: "",
+      consent: false,
+      includeName: false,
+      regulatoryBodies: [],
+    }); // Reset form data
+    setTidiedComplaint(""); // Clear tidied complaint
+    setEditedTidiedComplaint(""); // Clear edited tidied complaint
+    setIsEditingTidiedComplaint(false); // Reset edit mode
+    setError(""); // Clear any errors
+    setSuggestionIndex(0); // Reset suggestion index
+    setExpandedBody(null); // Clear expanded regulatory body
   };
 
   return (
@@ -474,12 +552,22 @@ ${formData.includeName ? formData.fullName : "[Name omitted]"}
               This is a beta version—please send feedback to <a href="mailto:info@velaryn.com" className="underline">info@velaryn.com</a>.
             </p>
             <div className="w-full max-w-md">
-              <p className="text-sm text-gray-700 mb-4 dark:text-gray-300">
-                <strong>How It Works:</strong> 1. Enter a company name to find their social media. 2. Write your complaint. 3. Share it on X or Facebook.
-              </p>
-              <p className="text-sm text-gray-700 mb-4 dark:text-gray-300">
-                <strong>About This Tool:</strong> A free tool to help UK consumers complain publicly. We don’t store your data after use—just write and post.
-              </p>
+              <div className="mb-4">
+                <h2 className="text-lg font-semibold text-black dark:text-white">How It Works</h2>
+                <ol className="list-decimal list-inside text-gray-700 dark:text-gray-300">
+                  <li>Find the Company – Search for their social media profiles.</li>
+                  <li>Write Your Complaint – Describe your issue clearly.</li>
+                  <li>Share It – Post directly to X or Facebook in one click.</li>
+                </ol>
+              </div>
+              <div className="mb-4">
+                <h2 className="text-lg font-semibold text-black dark:text-white">About This Tool</h2>
+                <ul className="list-none text-gray-700 dark:text-gray-300">
+                  <li>✔ <strong>Free for UK consumers</strong> – Make your voice heard.</li>
+                  <li>✔ <strong>Privacy-focused</strong> – We do not store your data after use.</li>
+                  <li>✔ <strong>Quick & Easy</strong> – Just write, post, and let the company respond.</li>
+                </ul>
+              </div>
               <InputField
                 label="Company Name"
                 value={formData.company}
@@ -487,6 +575,7 @@ ${formData.includeName ? formData.fullName : "[Name omitted]"}
                 placeholder="e.g., British Gas"
                 required
                 onKeyDown={handleCompanyKeyDown}
+                maxLength={50}
               />
               <button
                 onClick={handleSearch}
@@ -513,18 +602,40 @@ ${formData.includeName ? formData.fullName : "[Name omitted]"}
               Beta version—send feedback to <a href="mailto:info@velaryn.com" className="underline">info@velaryn.com</a>.
             </p>
             <div className="text-center mb-4">
-              <Link href="/" className="text-blue-600 hover:underline dark:text-blue-400">Back to Home</Link>
+              {/* Updated link text and added onClick to reset state */}
+              <Link
+                href="/"
+                className="text-blue-800 hover:underline dark:text-blue-400 font-semibold"
+                onClick={handleBackToSearch}
+              >
+                Back to Company Search
+              </Link>
             </div>
             <ProgressIndicator currentStep={getCurrentStep()} />
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               <div className="p-4 border rounded bg-gray-100 text-black dark:bg-gray-800 dark:text-white dark:border-gray-700">
                 <p className="text-sm text-gray-700 mb-4 dark:text-gray-300">
-                  <strong>About This Tool:</strong> A free way to post complaints to company social media. We don’t store your data after use—just write and share.
+                  <strong>About This Tool:</strong> A free way to post complaints to company social media. <strong>We don’t store your data after use—just write and share.</strong>
                 </p>
                 <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">{socialHandles!.companyName}</h2>
                 <p><strong className="text-black dark:text-white">X Handle:</strong> {socialHandles!.xHandle}</p>
                 <p><strong className="text-black dark:text-white">Facebook Handle:</strong> {socialHandles!.fbHandle}</p>
-                <p className="text-gray-600 mt-2 dark:text-gray-400">{socialHandles!.message}</p>
+                <p
+                  className={`mt-2 flex items-center ${
+                    socialHandles!.message === "Details retrieved from database."
+                      ? "text-green-600 dark:text-green-400"
+                      : socialHandles!.message === "Company not in database. Social handles are guesses—verify manually."
+                      ? "text-yellow-600 dark:text-yellow-400"
+                      : "text-gray-600 dark:text-gray-400"
+                  }`}
+                >
+                  {socialHandles!.message === "Details retrieved from database." && (
+                    <svg className="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                  )}
+                  {socialHandles!.message}
+                </p>
 
                 <h3 className="text-lg font-semibold mt-6 mb-2 text-black dark:text-white">Your Details</h3>
                 <InputField
@@ -533,6 +644,8 @@ ${formData.includeName ? formData.fullName : "[Name omitted]"}
                   onChange={(value) => updateFormData("fullName", value)}
                   placeholder="Your Full Name"
                   required
+                  maxLength={100}
+                  inputRef={fullNameRef}
                 />
                 <label className="flex items-center mb-4">
                   <input
@@ -540,6 +653,7 @@ ${formData.includeName ? formData.fullName : "[Name omitted]"}
                     checked={formData.consent}
                     onChange={(e) => updateFormData("consent", e.target.checked)}
                     className="mr-2"
+                    ref={consentRef}
                   />
                   <span className="text-black dark:text-white">I consent to my data being used temporarily to generate and share this complaint. Data is not stored after use.</span>
                 </label>
@@ -555,7 +669,7 @@ ${formData.includeName ? formData.fullName : "[Name omitted]"}
 
                 <h3 className="text-lg font-semibold mb-2 text-black dark:text-white">Disclaimer</h3>
                 <p className="text-gray-700 mb-4 dark:text-gray-300">
-                  Disclaimer: You’re responsible for your complaint’s content, which must comply with UK laws (e.g., Public Order Act 1986). We don’t store your data after use, review your content, or endorse it. Use responsibly. CC’ing regulatory bodies does not guarantee action; you’re responsible for ensuring your complaint is appropriate for escalation.
+                  You’re responsible for your complaint’s content, which must comply with UK laws (e.g., Public Order Act 1986). We don’t store your data after use, review your content, or endorse it. Use responsibly. CC’ing regulatory bodies does not guarantee action; you’re responsible for ensuring your complaint is appropriate for escalation.
                 </p>
 
                 <h3 className="text-lg font-semibold mb-2 text-black dark:text-white">Draft Your Complaint</h3>
@@ -563,7 +677,11 @@ ${formData.includeName ? formData.fullName : "[Name omitted]"}
                   <label className="block text-black dark:text-white mb-1">Complaint Type</label>
                   <select
                     value={formData.complaintType}
-                    onChange={(e) => updateFormData("complaintType", e.target.value)}
+                    onChange={(e) => {
+                      updateFormData("complaintType", e.target.value);
+                      updateFormData("regulatoryBodies", []);
+                      setExpandedBody(null);
+                    }}
                     className="w-full p-2 border rounded text-black dark:text-white dark:bg-gray-800 dark:border-gray-700"
                   >
                     <option value="">Select a complaint type</option>
@@ -578,7 +696,7 @@ ${formData.includeName ? formData.fullName : "[Name omitted]"}
                       CC Regulatory Bodies (Optional)
                     </label>
                     <p className="text-sm text-gray-600 mb-2 dark:text-gray-400">
-                      Select bodies to copy in on your complaint to escalate the issue. Tap the info icon for guidance.
+                      Select a body to copy in on your complaint to escalate the issue. Tap the info icon for guidance.
                     </p>
                     {regulatoryBodies
                       .filter((body) => body.appliesTo.includes(formData.complaintType))
@@ -587,12 +705,11 @@ ${formData.includeName ? formData.fullName : "[Name omitted]"}
                           <div className="flex items-center">
                             <label className="flex items-center flex-1">
                               <input
-                                type="checkbox"
+                                type="radio"
+                                name="regulatoryBody"
                                 checked={formData.regulatoryBodies.includes(body.name)}
                                 onChange={(e) => {
-                                  const updatedBodies = e.target.checked
-                                    ? [...formData.regulatoryBodies, body.name]
-                                    : formData.regulatoryBodies.filter((name) => name !== body.name);
+                                  const updatedBodies = e.target.checked ? [body.name] : [];
                                   updateFormData("regulatoryBodies", updatedBodies);
                                 }}
                                 className="mr-2"
@@ -601,7 +718,7 @@ ${formData.includeName ? formData.fullName : "[Name omitted]"}
                             </label>
                             <button
                               onClick={() => setExpandedBody(expandedBody === body.name ? null : body.name)}
-                              className="focus:outline-none"
+                              className="focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
                             >
                               <svg
                                 className="w-4 h-4 text-gray-500 dark:text-gray-400"
@@ -624,8 +741,8 @@ ${formData.includeName ? formData.fullName : "[Name omitted]"}
                 <div className="flex gap-2 mb-2">
                   <button
                     onClick={handleGetSuggestion}
-                    className="w-2/3 bg-yellow-500 text-black p-2 rounded hover:bg-yellow-600 dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:text-white"
-                    disabled={!formData.complaintType || formData.complaintType === "Other"}
+                    className={`w-2/3 bg-yellow-500 text-black p-2 rounded hover:bg-yellow-600 dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:text-white ${!formData.complaintType ? "opacity-50 cursor-not-allowed" : ""}`}
+                    disabled={!formData.complaintType}
                   >
                     Get Suggestion
                   </button>
@@ -649,22 +766,21 @@ ${formData.includeName ? formData.fullName : "[Name omitted]"}
                   }}
                   placeholder={formData.complaintType ? complaintPlaceholders[formData.complaintType] : "Select a complaint type to see an example..."}
                   required
+                  maxLength={1000}
+                  textAreaRef={complaintRef}
                 />
-                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                  {formData.complaint.length}/1000 characters
-                </p>
               </div>
 
               <div className="p-4 border rounded bg-white text-black dark:bg-gray-900 dark:text-white dark:border-gray-700">
                 <h3 className="text-lg font-semibold mb-2 text-black dark:text-white">Draft Complaint Preview</h3>
                 <p className="text-gray-600 mb-2 dark:text-gray-400">This updates as you type.</p>
                 <pre
-                  className="whitespace-pre-wrap mb-4 min-h-[400px] border p-2 rounded bg-gray-50 dark:bg-gray-800 dark:text-white dark:border-gray-700"
+                  className="whitespace-pre-wrap mb-4 min-h-[200px] border p-2 rounded bg-gray-50 dark:bg-gray-800 dark:text-white dark:border-gray-700"
                   style={{ borderColor: formData.complaint ? "green" : "gray" }}
                 >
                   {formData.complaint
                     ? `To: ${socialHandles!.companyName},\n\n${formData.complaint}\n\nFrom: ${formData.fullName}`
-                    : "Start typing your complaint above..."}
+                    : "Start typing your complaint to see a preview..."}
                 </pre>
 
                 <button
@@ -738,12 +854,13 @@ ${formData.includeName ? formData.fullName : "[Name omitted]"}
                         value={editedTidiedComplaint}
                         onChange={(value) => setEditedTidiedComplaint(value)}
                         placeholder="Edit your tidied complaint here"
-                        className="min-h-[400px]"
+                        className="min-h-[200px]"
+                        textAreaRef={editComplaintRef}
                       />
                     ) : (
                       <pre
                         ref={tidiedComplaintRef}
-                        className="whitespace-pre-wrap mb-4 min-h-[400px] border p-2 rounded bg-gray-50 dark:bg-gray-800 dark:text-white dark:border-gray-700"
+                        className="whitespace-pre-wrap mb-4 min-h-[200px] border p-2 rounded bg-gray-50 dark:bg-gray-800 dark:text-white dark:border-gray-700"
                       >
                         {editedTidiedComplaint || tidiedComplaint}
                       </pre>

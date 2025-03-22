@@ -24,3 +24,37 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Issue 3: Above-the-fold content on landing page */
+@media (max-width: 640px) {
+  .container {
+    padding: 1rem;
+  }
+  .container h1 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .container p {
+    margin-bottom: 0.5rem;
+  }
+  .container .max-w-md {
+    margin-top: 0;
+  }
+}
+
+/* Issue 4: Above-the-fold content on Write Complaint page */
+@media (max-width: 640px) {
+  .max-w-6xl {
+    padding: 1rem;
+  }
+  .max-w-6xl h1 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .max-w-6xl .text-center {
+    margin-bottom: 0.5rem;
+  }
+  .grid {
+    gap: 1rem;
+  }
+}
