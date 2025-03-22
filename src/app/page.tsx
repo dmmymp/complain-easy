@@ -24,7 +24,7 @@ const InputField = ({
   required?: boolean;
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   maxLength?: number;
-  inputRef?: React.RefObject<HTMLInputElement>;
+  inputRef?: React.RefObject<HTMLInputElement | null>;
 }) => (
   <div className="mb-4">
     <label className="block text-black dark:text-white mb-1">{label}</label>
@@ -64,7 +64,7 @@ const TextAreaField = ({
   required?: boolean;
   className?: string;
   maxLength?: number;
-  textAreaRef?: React.RefObject<HTMLTextAreaElement>;
+  textAreaRef?: React.RefObject<HTMLTextAreaElement | null>;
 }) => (
   <div className="mb-4">
     <label className="block text-black dark:text-white mb-1">{label}</label>
@@ -299,7 +299,7 @@ export default function Home() {
 
   const handleTidyComplaint = async () => {
     let errorMessage = "";
-    let scrollToRef: React.RefObject<HTMLElement> | null = null;
+    let scrollToRef: React.RefObject<HTMLInputElement | HTMLTextAreaElement | null> | null = null;
 
     if (!formData.fullName) {
       errorMessage = "Please enter your full name.";
@@ -515,9 +515,8 @@ ${formData.includeName ? `\n\nYours sincerely,\n${formData.fullName}` : ""}
     return 1;
   };
 
-  // New function to handle resetting state when going back to company search
   const handleBackToSearch = () => {
-    setSocialHandles(null); // Reset social handles to show the search form
+    setSocialHandles(null);
     setFormData({
       company: "",
       fullName: "",
@@ -526,13 +525,13 @@ ${formData.includeName ? `\n\nYours sincerely,\n${formData.fullName}` : ""}
       consent: false,
       includeName: false,
       regulatoryBodies: [],
-    }); // Reset form data
-    setTidiedComplaint(""); // Clear tidied complaint
-    setEditedTidiedComplaint(""); // Clear edited tidied complaint
-    setIsEditingTidiedComplaint(false); // Reset edit mode
-    setError(""); // Clear any errors
-    setSuggestionIndex(0); // Reset suggestion index
-    setExpandedBody(null); // Clear expanded regulatory body
+    });
+    setTidiedComplaint("");
+    setEditedTidiedComplaint("");
+    setIsEditingTidiedComplaint(false);
+    setError("");
+    setSuggestionIndex(0);
+    setExpandedBody(null);
   };
 
   return (
@@ -602,7 +601,6 @@ ${formData.includeName ? `\n\nYours sincerely,\n${formData.fullName}` : ""}
               Beta version—send feedback to <a href="mailto:info@velaryn.com" className="underline">info@velaryn.com</a>.
             </p>
             <div className="text-center mb-4">
-              {/* Updated link text and added onClick to reset state */}
               <Link
                 href="/"
                 className="text-blue-800 hover:underline dark:text-blue-400 font-semibold"
