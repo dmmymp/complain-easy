@@ -86,18 +86,114 @@ const TextAreaField = ({
 );
 
 const ProgressIndicator = ({ currentStep }: { currentStep: number }) => (
-  <div className="flex justify-center mb-6 text-sm font-bold text-gray-700 dark:text-gray-300 bg-gray-100 p-2 rounded-lg shadow-md">
-    <div className="flex items-center">
-      <span className={`mr-2 font-bold ${currentStep >= 1 ? "text-blue-600 dark:text-blue-400" : "text-gray-400 dark:text-gray-500"}`}>
-        1. Find Company <span className="text-xs italic font-normal">(Enter name)</span>
+  <div className="flex items-center justify-center mb-6">
+    {/* Step 1: Find Company */}
+    <div className="flex flex-col items-center">
+      <div
+        className={`w-12 h-12 flex items-center justify-center rounded-full ${
+          currentStep >= 1 ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-500"
+        } transition-all duration-300`}
+      >
+        <svg
+          className="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+          />
+        </svg>
+      </div>
+      <span
+        className={`mt-2 text-sm font-medium ${
+          currentStep >= 1 ? "text-blue-600 dark:text-blue-400" : "text-gray-500 dark:text-gray-400"
+        }`}
+      >
+        Find Company
       </span>
-      <span className="mr-2 dark:text-gray-300">{">"}</span>
-      <span className={`mr-2 font-bold ${currentStep >= 2 ? "text-blue-600 dark:text-blue-400" : "text-gray-400 dark:text-gray-500"}`}>
-        2. Write Complaint <span className="text-xs italic font-normal">(Fill details)</span>
+    </div>
+
+    {/* Arrow between Step 1 and Step 2 */}
+    <div
+      className={`h-1 w-16 mx-2 ${
+        currentStep >= 2 ? "bg-blue-600" : "bg-gray-200"
+      } transition-all duration-300`}
+    />
+
+    {/* Step 2: Write Complaint */}
+    <div className="flex flex-col items-center">
+      <div
+        className={`w-12 h-12 flex items-center justify-center rounded-full ${
+          currentStep >= 2 ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-500"
+        } transition-all duration-300`}
+      >
+        <svg
+          className="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+          />
+        </svg>
+      </div>
+      <span
+        className={`mt-2 text-sm font-medium ${
+          currentStep >= 2 ? "text-blue-600 dark:text-blue-400" : "text-gray-500 dark:text-gray-400"
+        }`}
+      >
+        Write Complaint
       </span>
-      <span className="mr-2 dark:text-gray-300">{">"}</span>
-      <span className={`font-bold ${currentStep >= 3 ? "text-blue-600 dark:text-blue-400" : "text-gray-400 dark:text-gray-500"}`}>
-        3. Share <span className="text-xs italic font-normal">(Tidy & post)</span>
+    </div>
+
+    {/* Arrow between Step 2 and Step 3 */}
+    <div
+      className={`h-1 w-16 mx-2 ${
+        currentStep >= 3 ? "bg-blue-600" : "bg-gray-200"
+      } transition-all duration-300`}
+    />
+
+    {/* Step 3: Share */}
+    <div className="flex flex-col items-center">
+      <div
+        className={`w-12 h-12 flex items-center justify-center rounded-full ${
+          currentStep >= 3 ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-500"
+        } transition-all duration-300`}
+      >
+        <svg
+  className="w-6 h-6"
+  fill="none"
+  stroke="currentColor"
+  viewBox="0 0 24 24"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  {/* Person 1 (Top) */}
+  <circle cx="12" cy="5" r="3" />
+  <rect x="9.5" y="7.5" width="6" height="6" rx="1" />
+  {/* Person 2 (Bottom Left) */}
+  <circle cx="5" cy="17" r="3" />
+  <rect x="2.5" y="19.5" width="6" height="6" rx="1" />
+  {/* Person 3 (Bottom Right) */}
+  <circle cx="19" cy="17" r="3" />
+  <rect x="16.5" y="19.5" width="6" height="6" rx="1" />
+</svg>
+      </div>
+      <span
+        className={`mt-2 text-sm font-medium ${
+          currentStep >= 3 ? "text-blue-600 dark:text-blue-400" : "text-gray-500 dark:text-gray-400"
+        }`}
+      >
+        Share
       </span>
     </div>
   </div>
