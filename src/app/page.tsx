@@ -171,22 +171,22 @@ const ProgressIndicator = ({ currentStep }: { currentStep: number }) => (
         } transition-all duration-300`}
       >
         <svg
-  className="w-6 h-6"
-  fill="none"
-  stroke="currentColor"
-  viewBox="0 0 24 24"
-  xmlns="http://www.w3.org/2000/svg"
->
-  {/* Person 1 (Top) */}
-  <circle cx="12" cy="5" r="3" />
-  <rect x="9.5" y="7.5" width="6" height="6" rx="1" />
-  {/* Person 2 (Bottom Left) */}
-  <circle cx="5" cy="17" r="3" />
-  <rect x="2.5" y="19.5" width="6" height="6" rx="1" />
-  {/* Person 3 (Bottom Right) */}
-  <circle cx="19" cy="17" r="3" />
-  <rect x="16.5" y="19.5" width="6" height="6" rx="1" />
-</svg>
+          className="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          {/* Person 1 (Top) */}
+          <circle cx="12" cy="5" r="3" />
+          <rect x="9.5" y="7.5" width="6" height="6" rx="1" />
+          {/* Person 2 (Bottom Left) */}
+          <circle cx="5" cy="17" r="3" />
+          <rect x="2.5" y="19.5" width="6" height="6" rx="1" />
+          {/* Person 3 (Bottom Right) */}
+          <circle cx="19" cy="17" r="3" />
+          <rect x="16.5" y="19.5" width="6" height="6" rx="1" />
+        </svg>
       </div>
       <span
         className={`mt-2 text-sm font-medium ${
@@ -340,6 +340,34 @@ export default function Home() {
     ],
   };
 
+  const scriptedComplaintsWithRegulatoryBody: { [key: string]: string[] } = {
+    "Service Delays": [
+      "Your service was delayed by over 2 hours with no prior notice, causing significant inconvenience. I am CC’ing [Regulatory Body] to address this issue.",
+      "I waited 45 minutes beyond the scheduled time for your technician, disrupting my day. I am CC’ing [Regulatory Body] to ensure this is resolved.",
+      "Your delivery arrived 3 days late, despite promises of next-day service. I am CC’ing [Regulatory Body] to escalate this matter.",
+    ],
+    "Poor Customer Service": [
+      "Your staff were unhelpful and rude when I called to resolve an issue with my account. I am CC’ing [Regulatory Body] to address this poor service.",
+      "I spent 30 minutes on hold, only to be disconnected without a resolution. I am CC’ing [Regulatory Body] to escalate this issue.",
+      "Your representative dismissed my complaint without offering any assistance. I am CC’ing [Regulatory Body] to ensure this is handled properly.",
+    ],
+    "Billing Issues": [
+      "I was overcharged £50 on my last bill with no explanation provided. I am CC’ing [Regulatory Body] to investigate this billing issue.",
+      "Your company billed me twice for the same service this month. I am CC’ing [Regulatory Body] to address this error.",
+      "I’m still being charged for a subscription I cancelled three months ago. I am CC’ing [Regulatory Body] to resolve this billing dispute.",
+    ],
+    "Product Quality": [
+      "The item I purchased broke within a week, despite being advertised as durable. I am CC’ing [Regulatory Body] to address this product quality issue.",
+      "Your product arrived damaged, and I’ve had no response to my refund request. I am CC’ing [Regulatory Body] to escalate this matter.",
+      "The quality of your service was far below what was promised on your website. I am CC’ing [Regulatory Body] to investigate this issue.",
+    ],
+    "Other": [
+      "I have an issue not listed here that I’d like addressed promptly. I am CC’ing [Regulatory Body] to ensure this is handled appropriately.",
+      "Your company’s actions have caused me unexpected difficulties. I am CC’ing [Regulatory Body] to address this matter.",
+      "I’m dissatisfied with an aspect of your service not covered above. I am CC’ing [Regulatory Body] to escalate this issue.",
+    ],
+  };
+
   const updateFormData = (key: keyof FormData, value: string | boolean | string[]) =>
     setFormData((prev) => ({ ...prev, [key]: value }));
 
@@ -382,9 +410,22 @@ export default function Home() {
       return;
     }
 
-    const prompts = scriptedComplaints[formData.complaintType];
-    const nextIndex = (suggestionIndex + 1) % prompts.length;
-    updateFormData("complaint", prompts[nextIndex]);
+    // Determine which suggestion set to use based on whether a regulatory body is selected
+    const hasRegulatoryBody = formData.regulatoryBodies.length > 0;
+    const suggestions = hasRegulatoryBody
+      ? scriptedComplaintsWithRegulatoryBody[formData.complaintType]
+      : scriptedComplaints[formData.complaintType];
+
+    const nextIndex = (suggestionIndex + 1) % suggestions.length;
+    let suggestion = suggestions[nextIndex];
+
+    // If a regulatory body is selected, replace the placeholder with the regulatory body's name
+    if (hasRegulatoryBody) {
+      const regulatoryBodyName = formData.regulatoryBodies[0]; // Only one regulatory body can be selected
+      suggestion = suggestion.replace("[Regulatory Body]", regulatoryBodyName);
+    }
+
+    updateFormData("complaint", suggestion);
     setSuggestionIndex(nextIndex);
   };
 
