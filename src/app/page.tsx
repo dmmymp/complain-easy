@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import html2canvas from "html2canvas";
 import Link from "next/link";
 import Head from "next/head";
 
@@ -86,16 +85,16 @@ const TextAreaField = ({
 );
 
 const ProgressIndicator = ({ currentStep }: { currentStep: number }) => (
-  <div className="flex flex-col sm:flex-row items-center justify-center mb-6 space-y-4 sm:space-y-0 sm:space-x-4">
+  <div className="flex flex-row items-center justify-center mb-6 space-x-2 flex-wrap">
     {/* Step 1: Find Company */}
     <div className="flex flex-col items-center">
       <div
-        className={`w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full ${
+        className={`w-8 h-8 flex items-center justify-center rounded-full ${
           currentStep >= 1 ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-500"
         } transition-all duration-300`}
       >
         <svg
-          className="w-5 h-5 sm:w-6 sm:h-6"
+          className="w-4 h-4"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -110,17 +109,17 @@ const ProgressIndicator = ({ currentStep }: { currentStep: number }) => (
         </svg>
       </div>
       <span
-        className={`mt-2 text-xs sm:text-sm font-medium text-center ${
+        className={`mt-1 text-xs font-medium text-center ${
           currentStep >= 1 ? "text-blue-600 dark:text-blue-400" : "text-gray-500 dark:text-gray-400"
         }`}
       >
-        Find Company
+        Find
       </span>
     </div>
 
-    {/* Arrow between Step 1 and Step 2 */}
+    {/* Arrow */}
     <div
-      className={`h-1 w-12 sm:w-16 mx-0 sm:mx-2 ${
+      className={`h-1 w-8 ${
         currentStep >= 2 ? "bg-blue-600" : "bg-gray-200"
       } transition-all duration-300`}
     />
@@ -128,12 +127,12 @@ const ProgressIndicator = ({ currentStep }: { currentStep: number }) => (
     {/* Step 2: Write Complaint */}
     <div className="flex flex-col items-center">
       <div
-        className={`w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full ${
+        className={`w-8 h-8 flex items-center justify-center rounded-full ${
           currentStep >= 2 ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-500"
         } transition-all duration-300`}
       >
         <svg
-          className="w-5 h-5 sm:w-6 sm:h-6"
+          className="w-4 h-4"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -148,17 +147,17 @@ const ProgressIndicator = ({ currentStep }: { currentStep: number }) => (
         </svg>
       </div>
       <span
-        className={`mt-2 text-xs sm:text-sm font-medium text-center ${
+        className={`mt-1 text-xs font-medium text-center ${
           currentStep >= 2 ? "text-blue-600 dark:text-blue-400" : "text-gray-500 dark:text-gray-400"
         }`}
       >
-        Write Complaint
+        Write
       </span>
     </div>
 
-    {/* Arrow between Step 2 and Step 3 */}
+    {/* Arrow */}
     <div
-      className={`h-1 w-12 sm:w-16 mx-0 sm:mx-2 ${
+      className={`h-1 w-8 ${
         currentStep >= 3 ? "bg-blue-600" : "bg-gray-200"
       } transition-all duration-300`}
     />
@@ -166,12 +165,12 @@ const ProgressIndicator = ({ currentStep }: { currentStep: number }) => (
     {/* Step 3: Share */}
     <div className="flex flex-col items-center">
       <div
-        className={`w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full ${
+        className={`w-8 h-8 flex items-center justify-center rounded-full ${
           currentStep >= 3 ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-500"
         } transition-all duration-300`}
       >
         <svg
-          className="w-5 h-5 sm:w-6 sm:h-6"
+          className="w-4 h-4"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -186,7 +185,7 @@ const ProgressIndicator = ({ currentStep }: { currentStep: number }) => (
         </svg>
       </div>
       <span
-        className={`mt-2 text-xs sm:text-sm font-medium text-center ${
+        className={`mt-1 text-xs font-medium text-center ${
           currentStep >= 3 ? "text-blue-600 dark:text-blue-400" : "text-gray-500 dark:text-gray-400"
         }`}
       >
@@ -285,9 +284,9 @@ export default function Home() {
   const [tidyLoading, setTidyLoading] = useState<boolean>(false);
   const [showLegalReminder, setShowLegalReminder] = useState<boolean>(false);
   const [showShareConfirmation, setShowShareConfirmation] = useState<"X" | "Facebook" | null>(null);
+  const [showFullScreenComplaint, setShowFullScreenComplaint] = useState<boolean>(false);
   const [suggestionIndex, setSuggestionIndex] = useState<number>(0);
   const [expandedBody, setExpandedBody] = useState<string | null>(null);
-  const tidiedComplaintRef = useRef<HTMLPreElement>(null);
   const fullNameRef = useRef<HTMLInputElement>(null);
   const complaintRef = useRef<HTMLTextAreaElement>(null);
   const consentRef = useRef<HTMLInputElement>(null);
@@ -490,145 +489,41 @@ export default function Home() {
     navigator.clipboard.writeText(text).then(() => alert("Complaint copied to clipboard!"));
   };
 
-  const handleShareOnX = async () => {
-    if (!tidiedComplaintRef.current || !tidiedComplaint) return;
+  const handleShowFullScreen = () => {
+    setShowFullScreenComplaint(true);
+  };
+
+  const handleShareOnX = () => {
+    if (!tidiedComplaint) return;
     setShowShareConfirmation("X");
   };
 
-  const handleShareOnFacebook = async () => {
-    if (!tidiedComplaintRef.current || !tidiedComplaint) return;
+  const handleShareOnFacebook = () => {
+    if (!tidiedComplaint) return;
     setShowShareConfirmation("Facebook");
   };
 
-  const confirmShare = async (platform: "X" | "Facebook") => {
+  const confirmShare = (platform: "X" | "Facebook") => {
     setShowShareConfirmation(null);
 
-    if (!tidiedComplaintRef.current) {
-      setError("Unable to share: Complaint element not found.");
-      return;
-    }
+    const complaintToShare = isEditingTidiedComplaint ? editedTidiedComplaint : tidiedComplaint;
+    const ccHandles = formData.regulatoryBodies
+      .map((bodyName) => {
+        const body = regulatoryBodies.find((b) => b.name === bodyName);
+        return platform === "X" ? body?.xHandle : body?.fbHandle;
+      })
+      .filter(Boolean);
+    const ccText = ccHandles.length > 0 ? ` (CC: ${ccHandles.join(", ")})` : "";
+    const url = window.location.href;
 
-    const complaintToSanitize = isEditingTidiedComplaint ? editedTidiedComplaint : tidiedComplaint;
-    const sanitizedComplaintLines = complaintToSanitize.split("\n").filter(line => line.trim() !== "");
-    let bodyEndIndex = sanitizedComplaintLines.length;
-    for (let i = 1; i < sanitizedComplaintLines.length; i++) {
-      const line = sanitizedComplaintLines[i].trim().toLowerCase();
-      if (line.match(/^(yours sincerely,|sincerely,)/i)) {
-        bodyEndIndex = i;
-        break;
-      }
-    }
-
-    const bodyLines = sanitizedComplaintLines.slice(1, bodyEndIndex);
-    const sanitizedComplaint = `
-${bodyLines.join("\n").trim()}
-${formData.includeName ? `\n\nYours sincerely,\n${formData.fullName}` : ""}
-    `.trim();
-
-    const originalContent = tidiedComplaintRef.current.innerText;
-    tidiedComplaintRef.current.innerText = sanitizedComplaint;
-
-    try {
-      tidiedComplaintRef.current.style.display = "block";
-      tidiedComplaintRef.current.style.visibility = "visible";
-      tidiedComplaintRef.current.style.color = "#000000";
-      tidiedComplaintRef.current.style.backgroundColor = "#ffffff";
-      tidiedComplaintRef.current.style.fontFamily = "Arial, sans-serif";
-      tidiedComplaintRef.current.style.width = "600px";
-      tidiedComplaintRef.current.style.minHeight = "400px";
-      tidiedComplaintRef.current.style.padding = "10px";
-      tidiedComplaintRef.current.style.position = "absolute";
-      tidiedComplaintRef.current.style.left = "0";
-      tidiedComplaintRef.current.style.top = "0";
-
-      await new Promise((resolve) => setTimeout(resolve, 500));
-
-      const canvas = await html2canvas(tidiedComplaintRef.current, {
-        scale: /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ? 1 : 2, // Reduce scale on mobile for performance
-        useCORS: true,
-        logging: true,
-        backgroundColor: "#ffffff",
-        onclone: (document) => {
-          const elements = document.querySelectorAll("*");
-          elements.forEach((el) => {
-            if (!(el instanceof HTMLElement)) return;
-            const style = window.getComputedStyle(el);
-            el.style.color = style.color.includes("oklch") ? "#000000" : style.color;
-            el.style.backgroundColor = style.backgroundColor.includes("oklch") ? "#ffffff" : style.backgroundColor;
-            el.style.borderColor = style.borderColor.includes("oklch") ? "#000000" : style.borderColor;
-            el.style.boxShadow = "none";
-            el.style.display = "block";
-            el.style.visibility = "visible";
-            el.style.fontFamily = "Arial, sans-serif";
-          });
-        },
-      });
-      const imageDataUrl = canvas.toDataURL("image/png");
-
-      try {
-        const blob = await fetch(imageDataUrl).then((res) => res.blob());
-        await navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]);
-        alert(`Screenshot copied! Paste it into your ${platform} post. Enjoyed Complain Easy? Tell us: info@velaryn.com`);
-      } catch (err) {
-        console.error("Clipboard error:", err);
-        tidiedComplaintRef.current.innerHTML = `<img src="${imageDataUrl}" alt="Complaint Screenshot" class="max-w-full" />`;
-        alert(`Copy failed. Long-press the screenshot below to save it, then share on ${platform}. Feedback? info@velaryn.com`);
-      }
-
-      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-      const url = window.location.href;
-
-      if (platform === "X") {
-        const ccHandles = formData.regulatoryBodies
-          .map((bodyName) => regulatoryBodies.find((b) => b.name === bodyName)?.xHandle)
-          .filter(Boolean);
-        const ccText = ccHandles.length > 0 ? ` (CC: ${ccHandles.join(", ")})` : "";
-        const tweetText = `Hey ${socialHandles?.xHandle || "@company"}, here’s my complaint - please fix it!${ccText} Made with this free tool ➡️`;
-        const webUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}&url=${encodeURIComponent(url)}`;
-        const mobileUrl = `twitter://post?message=${encodeURIComponent(tweetText + " " + url)}`;
-
-        window.location.href = isMobile ? mobileUrl : webUrl;
-        if (isMobile) {
-          setTimeout(() => {
-            if (document.hidden) return;
-            window.location.href = webUrl;
-          }, 2000);
-        }
-      } else {
-        const ccHandles = formData.regulatoryBodies
-          .map((bodyName) => regulatoryBodies.find((b) => b.name === bodyName)?.fbHandle)
-          .filter(Boolean);
-        const ccText = ccHandles.length > 0 ? ` (CC: ${ccHandles.join(", ")})` : "";
-        const fbText = `Complained to ${socialHandles?.fbHandle || "this company"} with this free tool!${ccText}`;
-        const webUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(fbText)}`;
-        const mobileUrl = `fb://publish/?text=${encodeURIComponent(fbText + " " + url)}`;
-
-        window.location.href = isMobile ? mobileUrl : webUrl;
-        if (isMobile) {
-          setTimeout(() => {
-            if (document.hidden) return;
-            window.location.href = webUrl;
-          }, 2000);
-        }
-      }
-    } catch (err: unknown) {
-      console.error(`Failed to generate screenshot for ${platform}:`, err);
-      setError("Failed to generate screenshot. Please try again or contact support.");
-    } finally {
-      if (tidiedComplaintRef.current) {
-        tidiedComplaintRef.current.innerText = originalContent;
-        tidiedComplaintRef.current.style.display = "";
-        tidiedComplaintRef.current.style.visibility = "";
-        tidiedComplaintRef.current.style.color = "";
-        tidiedComplaintRef.current.style.backgroundColor = "";
-        tidiedComplaintRef.current.style.fontFamily = "";
-        tidiedComplaintRef.current.style.width = "";
-        tidiedComplaintRef.current.style.minHeight = "";
-        tidiedComplaintRef.current.style.padding = "";
-        tidiedComplaintRef.current.style.position = "";
-        tidiedComplaintRef.current.style.left = "";
-        tidiedComplaintRef.current.style.top = "";
-      }
+    if (platform === "X") {
+      const tweetText = `Hey ${socialHandles?.xHandle || "@company"}, here’s my complaint - please fix it!${ccText} Made with this free tool ➡️`;
+      const mobileUrl = `twitter://post?message=${encodeURIComponent(tweetText + " " + url)}`;
+      window.location.href = mobileUrl;
+    } else {
+      const fbText = `Complained to ${socialHandles?.fbHandle || "this company"} with this free tool!${ccText}`;
+      const mobileUrl = `fb://publish/?text=${encodeURIComponent(fbText + " " + url)}`;
+      window.location.href = mobileUrl;
     }
   };
 
@@ -981,6 +876,23 @@ ${formData.includeName ? `\n\nYours sincerely,\n${formData.fullName}` : ""}
                   </div>
                 )}
 
+                {showFullScreenComplaint && (
+                  <div className="fixed inset-0 bg-white dark:bg-gray-900 flex flex-col items-center justify-center p-4">
+                    <pre className="whitespace-pre-wrap text-black dark:text-white text-base mb-4">
+                      {isEditingTidiedComplaint ? editedTidiedComplaint : tidiedComplaint}
+                    </pre>
+                    <p className="text-black dark:text-white text-sm mb-4 text-center">
+                      Press Side + Volume Up to screenshot (or Home + Power on older iPhones). Then open {showShareConfirmation} app, tap the text box, and select "Paste" to add the screenshot.
+                    </p>
+                    <button
+                      onClick={() => setShowFullScreenComplaint(false)}
+                      className="bg-gray-300 text-black p-3 rounded hover:bg-gray-400 dark:bg-gray-600 dark:text-white dark:hover:bg-gray-500 text-base"
+                    >
+                      Back
+                    </button>
+                  </div>
+                )}
+
                 {tidiedComplaint && (
                   <div className="mt-6">
                     <h3 className="text-lg font-semibold mb-2 text-black dark:text-white">Tidied Complaint:</h3>
@@ -995,7 +907,6 @@ ${formData.includeName ? `\n\nYours sincerely,\n${formData.fullName}` : ""}
                       />
                     ) : (
                       <pre
-                        ref={tidiedComplaintRef}
                         className="whitespace-pre-wrap mb-4 min-h-[200px] border p-2 rounded bg-gray-50 dark:bg-gray-800 dark:text-white dark:border-gray-700 text-sm sm:text-base"
                       >
                         {editedTidiedComplaint || tidiedComplaint}
@@ -1012,7 +923,14 @@ ${formData.includeName ? `\n\nYours sincerely,\n${formData.fullName}` : ""}
                         onClick={() => handleCopyToClipboard(isEditingTidiedComplaint ? editedTidiedComplaint : tidiedComplaint)}
                         className="w-full bg-gray-300 text-black p-3 rounded hover:bg-gray-400 dark:bg-gray-600 dark:text-white dark:hover:bg-gray-500 text-base"
                       >
-                        📋 Copy Complaint
+                        📋 Copy Complaint Text
+                      </button>
+                      <button
+                        onClick={handleShowFullScreen}
+                        className="w-full bg-blue-500 text-white p-3 rounded hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-base"
+                        disabled={isEditingTidiedComplaint || !formData.consent}
+                      >
+                        View Full Screen to Screenshot
                       </button>
                       <button
                         onClick={handleShareOnX}
