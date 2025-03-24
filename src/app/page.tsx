@@ -33,7 +33,7 @@ const InputField = ({
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
-      className="w-full p-2 border rounded text-black placeholder-gray-500 dark:text-white dark:border-gray-700 dark:bg-gray-800 dark:placeholder-gray-400"
+      className="w-full p-3 border rounded text-black placeholder-gray-500 dark:text-white dark:border-gray-700 dark:bg-gray-800 dark:placeholder-gray-400 text-base"
       required={required}
       onKeyDown={onKeyDown}
       maxLength={maxLength}
@@ -72,7 +72,7 @@ const TextAreaField = ({
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
-      className={`w-full p-2 border rounded text-black placeholder-gray-500 min-h-[100px] dark:text-white dark:border-gray-700 dark:bg-gray-800 dark:placeholder-gray-400 ${className}`}
+      className={`w-full p-3 border rounded text-black placeholder-gray-500 min-h-[120px] dark:text-white dark:border-gray-700 dark:bg-gray-800 dark:placeholder-gray-400 text-base ${className}`}
       required={required}
       maxLength={maxLength}
       ref={textAreaRef}
@@ -86,16 +86,16 @@ const TextAreaField = ({
 );
 
 const ProgressIndicator = ({ currentStep }: { currentStep: number }) => (
-  <div className="flex items-center justify-center mb-6">
+  <div className="flex flex-col sm:flex-row items-center justify-center mb-6 space-y-4 sm:space-y-0 sm:space-x-4">
     {/* Step 1: Find Company */}
     <div className="flex flex-col items-center">
       <div
-        className={`w-12 h-12 flex items-center justify-center rounded-full ${
+        className={`w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full ${
           currentStep >= 1 ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-500"
         } transition-all duration-300`}
       >
         <svg
-          className="w-6 h-6"
+          className="w-5 h-5 sm:w-6 sm:h-6"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -110,7 +110,7 @@ const ProgressIndicator = ({ currentStep }: { currentStep: number }) => (
         </svg>
       </div>
       <span
-        className={`mt-2 text-sm font-medium ${
+        className={`mt-2 text-xs sm:text-sm font-medium text-center ${
           currentStep >= 1 ? "text-blue-600 dark:text-blue-400" : "text-gray-500 dark:text-gray-400"
         }`}
       >
@@ -120,7 +120,7 @@ const ProgressIndicator = ({ currentStep }: { currentStep: number }) => (
 
     {/* Arrow between Step 1 and Step 2 */}
     <div
-      className={`h-1 w-16 mx-2 ${
+      className={`h-1 w-12 sm:w-16 mx-0 sm:mx-2 ${
         currentStep >= 2 ? "bg-blue-600" : "bg-gray-200"
       } transition-all duration-300`}
     />
@@ -128,12 +128,12 @@ const ProgressIndicator = ({ currentStep }: { currentStep: number }) => (
     {/* Step 2: Write Complaint */}
     <div className="flex flex-col items-center">
       <div
-        className={`w-12 h-12 flex items-center justify-center rounded-full ${
+        className={`w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full ${
           currentStep >= 2 ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-500"
         } transition-all duration-300`}
       >
         <svg
-          className="w-6 h-6"
+          className="w-5 h-5 sm:w-6 sm:h-6"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -148,7 +148,7 @@ const ProgressIndicator = ({ currentStep }: { currentStep: number }) => (
         </svg>
       </div>
       <span
-        className={`mt-2 text-sm font-medium ${
+        className={`mt-2 text-xs sm:text-sm font-medium text-center ${
           currentStep >= 2 ? "text-blue-600 dark:text-blue-400" : "text-gray-500 dark:text-gray-400"
         }`}
       >
@@ -158,7 +158,7 @@ const ProgressIndicator = ({ currentStep }: { currentStep: number }) => (
 
     {/* Arrow between Step 2 and Step 3 */}
     <div
-      className={`h-1 w-16 mx-2 ${
+      className={`h-1 w-12 sm:w-16 mx-0 sm:mx-2 ${
         currentStep >= 3 ? "bg-blue-600" : "bg-gray-200"
       } transition-all duration-300`}
     />
@@ -166,30 +166,27 @@ const ProgressIndicator = ({ currentStep }: { currentStep: number }) => (
     {/* Step 3: Share */}
     <div className="flex flex-col items-center">
       <div
-        className={`w-12 h-12 flex items-center justify-center rounded-full ${
+        className={`w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full ${
           currentStep >= 3 ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-500"
         } transition-all duration-300`}
       >
         <svg
-          className="w-6 h-6"
+          className="w-5 h-5 sm:w-6 sm:h-6"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
           xmlns="http://www.w3.org/2000/svg"
         >
-          {/* Person 1 (Top) */}
           <circle cx="12" cy="5" r="3" />
           <rect x="9.5" y="7.5" width="6" height="6" rx="1" />
-          {/* Person 2 (Bottom Left) */}
           <circle cx="5" cy="17" r="3" />
           <rect x="2.5" y="19.5" width="6" height="6" rx="1" />
-          {/* Person 3 (Bottom Right) */}
           <circle cx="19" cy="17" r="3" />
           <rect x="16.5" y="19.5" width="6" height="6" rx="1" />
         </svg>
       </div>
       <span
-        className={`mt-2 text-sm font-medium ${
+        className={`mt-2 text-xs sm:text-sm font-medium text-center ${
           currentStep >= 3 ? "text-blue-600 dark:text-blue-400" : "text-gray-500 dark:text-gray-400"
         }`}
       >
@@ -410,7 +407,6 @@ export default function Home() {
       return;
     }
 
-    // Determine which suggestion set to use based on whether a regulatory body is selected
     const hasRegulatoryBody = formData.regulatoryBodies.length > 0;
     const suggestions = hasRegulatoryBody
       ? scriptedComplaintsWithRegulatoryBody[formData.complaintType]
@@ -419,9 +415,8 @@ export default function Home() {
     const nextIndex = (suggestionIndex + 1) % suggestions.length;
     let suggestion = suggestions[nextIndex];
 
-    // If a regulatory body is selected, replace the placeholder with the regulatory body's name
     if (hasRegulatoryBody) {
-      const regulatoryBodyName = formData.regulatoryBodies[0]; // Only one regulatory body can be selected
+      const regulatoryBodyName = formData.regulatoryBodies[0];
       suggestion = suggestion.replace("[Regulatory Body]", regulatoryBodyName);
     }
 
@@ -534,7 +529,6 @@ ${formData.includeName ? `\n\nYours sincerely,\n${formData.fullName}` : ""}
     tidiedComplaintRef.current.innerText = sanitizedComplaint;
 
     try {
-      console.log("Before screenshot - Content:", tidiedComplaintRef.current.innerText);
       tidiedComplaintRef.current.style.display = "block";
       tidiedComplaintRef.current.style.visibility = "visible";
       tidiedComplaintRef.current.style.color = "#000000";
@@ -549,10 +543,8 @@ ${formData.includeName ? `\n\nYours sincerely,\n${formData.fullName}` : ""}
 
       await new Promise((resolve) => setTimeout(resolve, 500));
 
-      console.log("After delay - Content:", tidiedComplaintRef.current.innerText);
-
       const canvas = await html2canvas(tidiedComplaintRef.current, {
-        scale: 2,
+        scale: /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ? 1 : 2, // Reduce scale on mobile for performance
         useCORS: true,
         logging: true,
         backgroundColor: "#ffffff",
@@ -561,16 +553,8 @@ ${formData.includeName ? `\n\nYours sincerely,\n${formData.fullName}` : ""}
           elements.forEach((el) => {
             if (!(el instanceof HTMLElement)) return;
             const style = window.getComputedStyle(el);
-            const color = style.color;
-            const backgroundColor = style.backgroundColor;
-            if (color.includes("oklch")) {
-              console.log(`Found oklch in color for element ${el.tagName}:`, color);
-              el.style.color = "#000000";
-            }
-            if (backgroundColor.includes("oklch")) {
-              console.log(`Found oklch in backgroundColor for element ${el.tagName}:`, backgroundColor);
-              el.style.backgroundColor = "#ffffff";
-            }
+            el.style.color = style.color.includes("oklch") ? "#000000" : style.color;
+            el.style.backgroundColor = style.backgroundColor.includes("oklch") ? "#ffffff" : style.backgroundColor;
             el.style.borderColor = style.borderColor.includes("oklch") ? "#000000" : style.borderColor;
             el.style.boxShadow = "none";
             el.style.display = "block";
@@ -580,35 +564,52 @@ ${formData.includeName ? `\n\nYours sincerely,\n${formData.fullName}` : ""}
         },
       });
       const imageDataUrl = canvas.toDataURL("image/png");
-      const blob = await fetch(imageDataUrl).then((res) => res.blob());
-      await navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]);
-      alert(`Screenshot of the complaint copied to clipboard! Paste it into your ${platform} post (Ctrl+V or Cmd+V).`);
+
+      try {
+        const blob = await fetch(imageDataUrl).then((res) => res.blob());
+        await navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]);
+        alert(`Screenshot copied! Paste it into your ${platform} post. Enjoyed Complain Easy? Tell us: info@velaryn.com`);
+      } catch (err) {
+        console.error("Clipboard error:", err);
+        tidiedComplaintRef.current.innerHTML = `<img src="${imageDataUrl}" alt="Complaint Screenshot" class="max-w-full" />`;
+        alert(`Copy failed. Long-press the screenshot below to save it, then share on ${platform}. Feedback? info@velaryn.com`);
+      }
+
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      const url = window.location.href;
 
       if (platform === "X") {
         const ccHandles = formData.regulatoryBodies
-          .map((bodyName) => {
-            const body = regulatoryBodies.find((b) => b.name === bodyName);
-            return body?.xHandle ? body.xHandle : null;
-          })
+          .map((bodyName) => regulatoryBodies.find((b) => b.name === bodyName)?.xHandle)
           .filter(Boolean);
         const ccText = ccHandles.length > 0 ? ` (CC: ${ccHandles.join(", ")})` : "";
         const tweetText = `Hey ${socialHandles?.xHandle || "@company"}, here’s my complaint - please fix it!${ccText} Made with this free tool ➡️`;
-        const url = window.location.href;
-        const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}&url=${encodeURIComponent(url)}`;
-        window.location.href = twitterUrl;
+        const webUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}&url=${encodeURIComponent(url)}`;
+        const mobileUrl = `twitter://post?message=${encodeURIComponent(tweetText + " " + url)}`;
+
+        window.location.href = isMobile ? mobileUrl : webUrl;
+        if (isMobile) {
+          setTimeout(() => {
+            if (document.hidden) return;
+            window.location.href = webUrl;
+          }, 2000);
+        }
       } else {
         const ccHandles = formData.regulatoryBodies
-          .map((bodyName) => {
-            const body = regulatoryBodies.find((b) => b.name === bodyName);
-            return body?.fbHandle ? body.fbHandle : null;
-          })
+          .map((bodyName) => regulatoryBodies.find((b) => b.name === bodyName)?.fbHandle)
           .filter(Boolean);
         const ccText = ccHandles.length > 0 ? ` (CC: ${ccHandles.join(", ")})` : "";
-        const url = window.location.href;
-        const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}"e=${encodeURIComponent(
-          `Complained to ${socialHandles?.fbHandle || "this company"} with this free tool!${ccText}`
-        )}`;
-        window.location.href = facebookUrl;
+        const fbText = `Complained to ${socialHandles?.fbHandle || "this company"} with this free tool!${ccText}`;
+        const webUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(fbText)}`;
+        const mobileUrl = `fb://publish/?text=${encodeURIComponent(fbText + " " + url)}`;
+
+        window.location.href = isMobile ? mobileUrl : webUrl;
+        if (isMobile) {
+          setTimeout(() => {
+            if (document.hidden) return;
+            window.location.href = webUrl;
+          }, 2000);
+        }
       }
     } catch (err: unknown) {
       console.error(`Failed to generate screenshot for ${platform}:`, err);
@@ -679,18 +680,18 @@ ${formData.includeName ? `\n\nYours sincerely,\n${formData.fullName}` : ""}
         <meta property="og:url" content="https://your-complaint-app-url.com" />
         <meta property="og:type" content="website" />
       </Head>
-      <div className="container mx-auto p-6 bg-white dark:bg-gray-900">
+      <div className="container mx-auto p-4 sm:p-6 bg-white dark:bg-gray-900 min-h-screen">
         {!socialHandles ? (
           <div className="flex flex-col items-center justify-center min-h-screen bg-white dark:bg-gray-900">
-            <h1 className="text-2xl font-bold mb-2 text-black dark:text-white">Complain Easy - Beta</h1>
-            <p className="text-gray-600 mb-4 dark:text-gray-300">Post a complaint to a company’s social media in minutes.</p>
-            <p className="text-sm text-yellow-600 mb-4 dark:text-yellow-400">
+            <h1 className="text-xl sm:text-2xl font-bold mb-2 text-black dark:text-white">Complain Easy - Beta</h1>
+            <p className="text-gray-600 mb-4 dark:text-gray-300 text-center">Post a complaint to a company’s social media in minutes.</p>
+            <p className="text-sm text-yellow-600 mb-4 dark:text-yellow-400 text-center">
               This is a beta version—please send feedback to <a href="mailto:info@velaryn.com" className="underline">info@velaryn.com</a>.
             </p>
             <div className="w-full max-w-md">
               <div className="mb-4">
                 <h2 className="text-lg font-semibold text-black dark:text-white">How It Works</h2>
-                <ol className="list-decimal list-inside text-gray-700 dark:text-gray-300">
+                <ol className="list-decimal list-inside text-gray-700 dark:text-gray-300 text-sm sm:text-base">
                   <li>Find the Company – Search for their social media profiles.</li>
                   <li>Write Your Complaint – Describe your issue clearly.</li>
                   <li>Share It – Post directly to X or Facebook in one click.</li>
@@ -698,7 +699,7 @@ ${formData.includeName ? `\n\nYours sincerely,\n${formData.fullName}` : ""}
               </div>
               <div className="mb-4">
                 <h2 className="text-lg font-semibold text-black dark:text-white">About This Tool</h2>
-                <ul className="list-none text-gray-700 dark:text-gray-300">
+                <ul className="list-none text-gray-700 dark:text-gray-300 text-sm sm:text-base">
                   <li>✔ <strong>Free for UK consumers</strong> – Make your voice heard.</li>
                   <li>✔ <strong>Privacy-focused</strong> – We do not store your data after use.</li>
                   <li>✔ <strong>Quick & Easy</strong> – Just write, post, and let the company respond.</li>
@@ -715,14 +716,14 @@ ${formData.includeName ? `\n\nYours sincerely,\n${formData.fullName}` : ""}
               />
               <button
                 onClick={handleSearch}
-                className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700"
+                className="w-full bg-blue-500 text-white p-3 rounded hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-base"
                 disabled={loading}
               >
                 {loading ? "Searching..." : "Find Company"}
               </button>
               {error && <p className="text-red-500 mt-4 text-center dark:text-red-400">{error}</p>}
             </div>
-            <footer className="mt-8 text-center text-gray-600 dark:text-gray-300">
+            <footer className="mt-8 text-center text-gray-600 dark:text-gray-300 text-sm">
               <p>
                 <Link href="/terms-of-use" className="text-blue-600 hover:underline dark:text-blue-400">Terms of Use</Link> |{" "}
                 <Link href="/privacy-policy" className="text-blue-600 hover:underline dark:text-blue-400">Privacy Policy</Link> |{" "}
@@ -733,30 +734,30 @@ ${formData.includeName ? `\n\nYours sincerely,\n${formData.fullName}` : ""}
           </div>
         ) : (
           <div className="max-w-6xl mx-auto bg-white dark:bg-gray-900">
-            <h1 className="text-2xl font-bold mb-6 text-black dark:text-white">Complain Easy - Beta</h1>
+            <h1 className="text-xl sm:text-2xl font-bold mb-6 text-black dark:text-white text-center">Complain Easy - Beta</h1>
             <p className="text-sm text-yellow-600 mb-4 dark:text-yellow-400 text-center">
               Beta version—send feedback to <a href="mailto:info@velaryn.com" className="underline">info@velaryn.com</a>.
             </p>
             <div className="text-center mb-4">
               <Link
                 href="/"
-                className="text-blue-800 hover:underline dark:text-blue-400 font-semibold"
+                className="text-blue-800 hover:underline dark:text-blue-400 font-semibold text-sm sm:text-base"
                 onClick={handleBackToSearch}
               >
                 Back to Company Search
               </Link>
             </div>
             <ProgressIndicator currentStep={getCurrentStep()} />
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div className="p-4 border rounded bg-gray-100 text-black dark:bg-gray-800 dark:text-white dark:border-gray-700">
                 <p className="text-sm text-gray-700 mb-4 dark:text-gray-300">
                   <strong>About This Tool:</strong> A free way to post complaints to company social media. <strong>We don’t store your data after use—just write and share.</strong>
                 </p>
-                <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">{socialHandles!.companyName}</h2>
+                <h2 className="text-lg sm:text-xl font-semibold mb-2 text-black dark:text-white">{socialHandles!.companyName}</h2>
                 <p><strong className="text-black dark:text-white">X Handle:</strong> {socialHandles!.xHandle}</p>
                 <p><strong className="text-black dark:text-white">Facebook Handle:</strong> {socialHandles!.fbHandle}</p>
                 <p
-                  className={`mt-2 flex items-center ${
+                  className={`mt-2 flex items-center text-sm ${
                     socialHandles!.message === "Details retrieved from database."
                       ? "text-green-600 dark:text-green-400"
                       : socialHandles!.message === "Company not in database. Social handles are guesses—verify manually."
@@ -765,7 +766,7 @@ ${formData.includeName ? `\n\nYours sincerely,\n${formData.fullName}` : ""}
                   }`}
                 >
                   {socialHandles!.message === "Details retrieved from database." && (
-                    <svg className="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5 mr-1" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                     </svg>
                   )}
@@ -782,7 +783,7 @@ ${formData.includeName ? `\n\nYours sincerely,\n${formData.fullName}` : ""}
                   maxLength={100}
                   inputRef={fullNameRef}
                 />
-                <label className="flex items-center mb-4">
+                <label className="flex items-center mb-4 text-sm sm:text-base">
                   <input
                     type="checkbox"
                     checked={formData.consent}
@@ -792,7 +793,7 @@ ${formData.includeName ? `\n\nYours sincerely,\n${formData.fullName}` : ""}
                   />
                   <span className="text-black dark:text-white">I consent to my data being used temporarily to generate and share this complaint. Data is not stored after use.</span>
                 </label>
-                <label className="flex items-center mb-4">
+                <label className="flex items-center mb-4 text-sm sm:text-base">
                   <input
                     type="checkbox"
                     checked={formData.includeName}
@@ -803,13 +804,13 @@ ${formData.includeName ? `\n\nYours sincerely,\n${formData.fullName}` : ""}
                 </label>
 
                 <h3 className="text-lg font-semibold mb-2 text-black dark:text-white">Disclaimer</h3>
-                <p className="text-gray-700 mb-4 dark:text-gray-300">
+                <p className="text-gray-700 mb-4 dark:text-gray-300 text-sm sm:text-base">
                   You’re responsible for your complaint’s content, which must comply with UK laws (e.g., Public Order Act 1986). We don’t store your data after use, review your content, or endorse it. Use responsibly. CC’ing regulatory bodies does not guarantee action; you’re responsible for ensuring your complaint is appropriate for escalation.
                 </p>
 
                 <h3 className="text-lg font-semibold mb-2 text-black dark:text-white">Draft Your Complaint</h3>
                 <div className="mb-4">
-                  <label className="block text-black dark:text-white mb-1">Complaint Type</label>
+                  <label className="block text-black dark:text-white mb-1 text-sm sm:text-base">Complaint Type</label>
                   <select
                     value={formData.complaintType}
                     onChange={(e) => {
@@ -817,7 +818,7 @@ ${formData.includeName ? `\n\nYours sincerely,\n${formData.fullName}` : ""}
                       updateFormData("regulatoryBodies", []);
                       setExpandedBody(null);
                     }}
-                    className="w-full p-2 border rounded text-black dark:text-white dark:bg-gray-800 dark:border-gray-700"
+                    className="w-full p-3 border rounded text-black dark:text-white dark:bg-gray-800 dark:border-gray-700 text-base"
                   >
                     <option value="">Select a complaint type</option>
                     {complaintTypes.map((type) => (
@@ -827,10 +828,10 @@ ${formData.includeName ? `\n\nYours sincerely,\n${formData.fullName}` : ""}
                 </div>
                 {formData.complaintType && (
                   <div className="mb-4">
-                    <label className="block text-black dark:text-white mb-1">
+                    <label className="block text-black dark:text-white mb-1 text-sm sm:text-base">
                       CC Regulatory Bodies (Optional)
                     </label>
-                    <p className="text-sm text-gray-600 mb-2 dark:text-gray-400">
+                    <p className="text-xs sm:text-sm text-gray-600 mb-2 dark:text-gray-400">
                       Select a body to copy in on your complaint to escalate the issue. Tap the info icon for guidance.
                     </p>
                     {regulatoryBodies
@@ -838,7 +839,7 @@ ${formData.includeName ? `\n\nYours sincerely,\n${formData.fullName}` : ""}
                       .map((body) => (
                         <div key={body.name} className="mb-2">
                           <div className="flex items-center">
-                            <label className="flex items-center flex-1">
+                            <label className="flex items-center flex-1 text-sm sm:text-base">
                               <input
                                 type="radio"
                                 name="regulatoryBody"
@@ -865,7 +866,7 @@ ${formData.includeName ? `\n\nYours sincerely,\n${formData.fullName}` : ""}
                             </button>
                           </div>
                           {expandedBody === body.name && (
-                            <div className="mt-1 p-2 bg-gray-200 dark:bg-gray-700 rounded text-sm text-gray-800 dark:text-gray-200">
+                            <div className="mt-1 p-2 bg-gray-200 dark:bg-gray-700 rounded text-xs sm:text-sm text-gray-800 dark:text-gray-200">
                               {body.description}
                             </div>
                           )}
@@ -873,17 +874,17 @@ ${formData.includeName ? `\n\nYours sincerely,\n${formData.fullName}` : ""}
                       ))}
                   </div>
                 )}
-                <div className="flex gap-2 mb-2">
+                <div className="flex flex-col sm:flex-row gap-2 mb-2">
                   <button
                     onClick={handleGetSuggestion}
-                    className={`w-2/3 bg-yellow-500 text-black p-2 rounded hover:bg-yellow-600 dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:text-white ${!formData.complaintType ? "opacity-50 cursor-not-allowed" : ""}`}
+                    className={`w-full sm:w-2/3 bg-yellow-500 text-black p-3 rounded hover:bg-yellow-600 dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:text-white text-base ${!formData.complaintType ? "opacity-50 cursor-not-allowed" : ""}`}
                     disabled={!formData.complaintType}
                   >
                     Get Suggestion
                   </button>
                   <button
                     onClick={handleClearSuggestion}
-                    className="w-1/3 bg-gray-300 text-black p-2 rounded hover:bg-gray-400 dark:bg-gray-600 dark:text-white dark:hover:bg-gray-500"
+                    className="w-full sm:w-1/3 bg-gray-300 text-black p-3 rounded hover:bg-gray-400 dark:bg-gray-600 dark:text-white dark:hover:bg-gray-500 text-base"
                   >
                     Clear Suggestion
                   </button>
@@ -908,9 +909,9 @@ ${formData.includeName ? `\n\nYours sincerely,\n${formData.fullName}` : ""}
 
               <div className="p-4 border rounded bg-white text-black dark:bg-gray-900 dark:text-white dark:border-gray-700">
                 <h3 className="text-lg font-semibold mb-2 text-black dark:text-white">Draft Complaint Preview</h3>
-                <p className="text-gray-600 mb-2 dark:text-gray-400">This updates as you type.</p>
+                <p className="text-gray-600 mb-2 dark:text-gray-400 text-sm">This updates as you type.</p>
                 <pre
-                  className="whitespace-pre-wrap mb-4 min-h-[200px] border p-2 rounded bg-gray-50 dark:bg-gray-800 dark:text-white dark:border-gray-700"
+                  className="whitespace-pre-wrap mb-4 min-h-[200px] border p-2 rounded bg-gray-50 dark:bg-gray-800 dark:text-white dark:border-gray-700 text-sm sm:text-base"
                   style={{ borderColor: formData.complaint ? "green" : "gray" }}
                 >
                   {formData.complaint
@@ -920,33 +921,33 @@ ${formData.includeName ? `\n\nYours sincerely,\n${formData.fullName}` : ""}
 
                 <button
                   onClick={handleTidyComplaint}
-                  className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 disabled:bg-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700"
+                  className="w-full bg-blue-500 text-white p-3 rounded hover:bg-blue-600 disabled:bg-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 text-base"
                   disabled={tidyLoading || !formData.complaint || !formData.consent}
                 >
                   {tidyLoading ? "Tidying Complaint..." : "Tidy Complaint with AI"}
                 </button>
 
                 {showLegalReminder && (
-                  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="bg-white p-6 rounded shadow-lg dark:bg-gray-800 max-w-md">
+                  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4">
+                    <div className="bg-white p-6 rounded shadow-lg dark:bg-gray-800 max-w-md w-full">
                       <h3 className="text-lg font-semibold mb-2 text-black dark:text-white">Before Tidying Your Complaint</h3>
-                      <p className="text-gray-700 mb-2 dark:text-gray-300">
+                      <p className="text-gray-700 mb-2 dark:text-gray-300 text-sm sm:text-base">
                         This complaint will be tidied using Mistral AI, an open-source model that refines your text for clarity.{" "}
                         <a href="https://mistral.ai" className="text-blue-600 hover:underline dark:text-blue-400">Learn more</a>.
                       </p>
-                      <p className="text-gray-700 mb-4 dark:text-gray-300">
+                      <p className="text-gray-700 mb-4 dark:text-gray-300 text-sm sm:text-base">
                         Ensure your complaint complies with UK laws (e.g., no threats or offensive content). You remain fully responsible for its content.
                       </p>
-                      <div className="flex gap-4">
+                      <div className="flex flex-col sm:flex-row gap-4">
                         <button
                           onClick={() => setShowLegalReminder(false)}
-                          className="bg-gray-300 text-black p-2 rounded hover:bg-gray-400 dark:bg-gray-600 dark:text-white dark:hover:bg-gray-500"
+                          className="w-full bg-gray-300 text-black p-3 rounded hover:bg-gray-400 dark:bg-gray-600 dark:text-white dark:hover:bg-gray-500 text-base"
                         >
                           Cancel
                         </button>
                         <button
                           onClick={confirmTidyComplaint}
-                          className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700"
+                          className="w-full bg-blue-500 text-white p-3 rounded hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-base"
                         >
                           Proceed
                         </button>
@@ -956,22 +957,22 @@ ${formData.includeName ? `\n\nYours sincerely,\n${formData.fullName}` : ""}
                 )}
 
                 {showShareConfirmation && (
-                  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="bg-white p-6 rounded shadow-lg dark:bg-gray-800 max-w-md">
+                  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4">
+                    <div className="bg-white p-6 rounded shadow-lg dark:bg-gray-800 max-w-md w-full">
                       <h3 className="text-lg font-semibold mb-2 text-black dark:text-white">Confirm Sharing</h3>
-                      <p className="text-gray-700 mb-4 dark:text-gray-300">
+                      <p className="text-gray-700 mb-4 dark:text-gray-300 text-sm sm:text-base">
                         Are you sure you want to share your complaint on {showShareConfirmation}? This will make your complaint public, and you are responsible for its content.
                       </p>
-                      <div className="flex gap-4">
+                      <div className="flex flex-col sm:flex-row gap-4">
                         <button
                           onClick={() => setShowShareConfirmation(null)}
-                          className="bg-gray-300 text-black p-2 rounded hover:bg-gray-400 dark:bg-gray-600 dark:text-white dark:hover:bg-gray-500"
+                          className="w-full bg-gray-300 text-black p-3 rounded hover:bg-gray-400 dark:bg-gray-600 dark:text-white dark:hover:bg-gray-500 text-base"
                         >
                           Cancel
                         </button>
                         <button
                           onClick={() => confirmShare(showShareConfirmation!)}
-                          className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700"
+                          className="w-full bg-blue-500 text-white p-3 rounded hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-base"
                         >
                           Confirm
                         </button>
@@ -995,7 +996,7 @@ ${formData.includeName ? `\n\nYours sincerely,\n${formData.fullName}` : ""}
                     ) : (
                       <pre
                         ref={tidiedComplaintRef}
-                        className="whitespace-pre-wrap mb-4 min-h-[200px] border p-2 rounded bg-gray-50 dark:bg-gray-800 dark:text-white dark:border-gray-700"
+                        className="whitespace-pre-wrap mb-4 min-h-[200px] border p-2 rounded bg-gray-50 dark:bg-gray-800 dark:text-white dark:border-gray-700 text-sm sm:text-base"
                       >
                         {editedTidiedComplaint || tidiedComplaint}
                       </pre>
@@ -1003,19 +1004,19 @@ ${formData.includeName ? `\n\nYours sincerely,\n${formData.fullName}` : ""}
                     <div className="flex flex-col gap-2">
                       <button
                         onClick={handleEditToggle}
-                        className="w-full bg-gray-300 text-black p-2 rounded hover:bg-gray-400 dark:bg-gray-600 dark:text-white dark:hover:bg-gray-500"
+                        className="w-full bg-gray-300 text-black p-3 rounded hover:bg-gray-400 dark:bg-gray-600 dark:text-white dark:hover:bg-gray-500 text-base"
                       >
                         {isEditingTidiedComplaint ? "Save Changes" : "Edit Complaint"}
                       </button>
                       <button
                         onClick={() => handleCopyToClipboard(isEditingTidiedComplaint ? editedTidiedComplaint : tidiedComplaint)}
-                        className="w-full bg-gray-300 text-black p-2 rounded hover:bg-gray-400 dark:bg-gray-600 dark:text-white dark:hover:bg-gray-500"
+                        className="w-full bg-gray-300 text-black p-3 rounded hover:bg-gray-400 dark:bg-gray-600 dark:text-white dark:hover:bg-gray-500 text-base"
                       >
                         📋 Copy Complaint
                       </button>
                       <button
                         onClick={handleShareOnX}
-                        className="w-full bg-black text-white p-2 rounded hover:bg-gray-800 flex items-center justify-center gap-2 dark:bg-gray-800 dark:hover:bg-gray-700"
+                        className="w-full bg-black text-white p-3 rounded hover:bg-gray-800 flex items-center justify-center gap-2 dark:bg-gray-800 dark:hover:bg-gray-700 text-base"
                         disabled={isEditingTidiedComplaint || !formData.consent}
                       >
                         <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -1025,7 +1026,7 @@ ${formData.includeName ? `\n\nYours sincerely,\n${formData.fullName}` : ""}
                       </button>
                       <button
                         onClick={handleShareOnFacebook}
-                        className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700 flex items-center justify-center gap-2 dark:bg-blue-700 dark:hover:bg-blue-800"
+                        className="w-full bg-blue-600 text-white p-3 rounded hover:bg-blue-700 flex items-center justify-center gap-2 dark:bg-blue-700 dark:hover:bg-blue-800 text-base"
                         disabled={isEditingTidiedComplaint || !formData.consent}
                       >
                         <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -1039,7 +1040,7 @@ ${formData.includeName ? `\n\nYours sincerely,\n${formData.fullName}` : ""}
               </div>
             </div>
             {error && <p className="text-red-500 mt-4 text-center dark:text-red-400">{error}</p>}
-            <footer className="mt-8 text-center text-gray-600 dark:text-gray-300">
+            <footer className="mt-8 text-center text-gray-600 dark:text-gray-300 text-sm">
               <p>
                 <Link href="/terms-of-use" className="text-blue-600 hover:underline dark:text-blue-400">Terms of Use</Link> |{" "}
                 <Link href="/privacy-policy" className="text-blue-600 hover:underline dark:text-blue-400">Privacy Policy</Link> |{" "}
